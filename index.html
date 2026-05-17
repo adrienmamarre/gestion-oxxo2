@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f6f2;--sf:#fff;--bd:#e8e4db;--tx:#1a1916;--mu:#8a8680;
+  --ac:#2d5be3;--as:#eef2fd;--gn:#1a8a5a;--gs:#e6f5ee;
+  --am:#b86a00;--ams:#fff4e0;--rd:#c0392b;--rs:#fdecea;
+  --pu:#5b3ab5;--ps:#f0ecfb;--tl:#0e7a7a;--ts:#e5f5f5;
+  --fn:'DM Sans',sans-serif;--mo:'DM Mono',monospace;--r:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#141410;--sf:#1e1e19;--bd:#2e2e28;--tx:#e8e5dc;--mu:#6a6660;
+  --ac:#6b8ef0;--as:#1a2345;--gn:#2ec882;--gs:#0e2e20;
+  --am:#e8a030;--ams:#2a1e00;--rd:#e05a4a;--rs:#2e0e0a;
+  --pu:#9b7eef;--ps:#1e1535;--tl:#2ebbbb;--ts:#0a2525;
+}}
+body{font-family:var(--fn);background:var(--bg);color:var(--tx);font-size:14px;min-height:100vh}
+.app{display:flex;min-height:100vh}
+.sb{width:214px;background:var(--sf);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--bd)}
+.lg-t{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.lg-s{font-size:12px;color:var(--mu);margin-top:2px}
+.sb-sec{padding:12px 11px 4px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu)}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;cursor:pointer;margin:2px 7px;color:var(--mu);font-size:14px;font-weight:500;transition:all .15s}
+.ni:hover,.ni.active{background:var(--as);color:var(--ac)}
+.nbadge{margin-left:auto;background:var(--rd);color:#fff;font-size:10px;padding:1px 6px;border-radius:20px;font-family:var(--mo)}
+.main{flex:1;overflow-x:hidden}
+.page{display:none;flex-direction:column;min-height:100vh}.page.active{display:flex}
+.ph{padding:20px 24px 0;border-bottom:1px solid var(--bd);background:var(--sf);position:sticky;top:0;z-index:10}
+.pt{font-size:22px;font-weight:700;letter-spacing:-.5px}
+.psub{font-size:13px;color:var(--mu);margin-top:3px;padding-bottom:15px}
+.pc{padding:20px 24px;flex:1}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px}
+.ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);margin-bottom:9px}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:13px 15px}
+.sl{font-size:11px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.sv{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-top:3px;font-family:var(--mo)}
+.ss{font-size:11px;color:var(--mu);margin-top:1px}
+.sc.acc .sv{color:var(--ac)}.sc.grn .sv{color:var(--gn)}.sc.amb .sv{color:var(--am)}.sc.red .sv{color:var(--rd)}
+.pb{background:var(--bd);border-radius:20px;height:5px;overflow:hidden;margin-top:5px}
+.pf{height:100%;border-radius:20px;transition:width .4s}
+.pbl{background:var(--ac)}.pgn{background:var(--gn)}.pam{background:var(--am)}.prd{background:var(--rd)}.ppu{background:var(--pu)}
+.tabs{display:flex;gap:1px;border-bottom:1px solid var(--bd);margin-bottom:15px}
+.tab{padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--mu);border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
+.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
+.tc{display:none}.tc.active{display:block}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px}
+.bg{background:var(--gs);color:var(--gn)}.ba{background:var(--ams);color:var(--am)}.br{background:var(--rs);color:var(--rd)}.bb{background:var(--as);color:var(--ac)}.bp{background:var(--ps);color:var(--pu)}.bt{background:var(--ts);color:var(--tl)}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-family:var(--fn);transition:all .15s}
+.btn:hover{background:var(--bg)}.bp2{background:var(--ac);color:#fff;border-color:var(--ac)}.bp2:hover{background:#2248c0}.bsm{padding:4px 9px;font-size:12px}
+.btn-print{background:var(--gs);color:var(--gn);border-color:var(--gn)}
+.dt{width:100%;border-collapse:collapse;font-size:13px}
+.dt th{text-align:left;padding:7px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);border-bottom:1px solid var(--bd)}
+.dt td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.dt tr:last-child td{border-bottom:none}
+.dt tr:hover td{background:var(--bg)}
+.fi{padding:7px 10px;border:1px solid var(--bd);border-radius:7px;font-size:13px;background:var(--sf);color:var(--tx);font-family:var(--fn);outline:none;width:100%}
+.fi:focus{border-color:var(--ac)}
+select.fi option{background:var(--sf)}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:none;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.mbox{background:var(--sf);border-radius:13px;padding:22px;width:500px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.mt2{font-size:16px;font-weight:700}
+.mc{background:none;border:none;cursor:pointer;font-size:19px;color:var(--mu);font-family:var(--fn)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fg{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+.fl{font-size:12px;font-weight:600;color:var(--mu)}
+.fbb{display:flex;gap:7px;justify-content:flex-end;margin-top:4px}
+.fb2{display:flex;justify-content:space-between;align-items:center}
+.fg2{display:flex;align-items:center;gap:7px}
+.txt-m{color:var(--mu);font-size:12px}
+.sh{font-size:16px;font-weight:700;margin-bottom:9px}
+.emp{text-align:center;padding:22px;color:var(--mu);font-size:13px}
+.ml{font-size:11px;font-weight:600;font-family:var(--mo);background:var(--bg);padding:2px 8px;border-radius:6px;color:var(--mu)}
+/* CAL */
+.cal-header{display:grid;grid-template-columns:36px 100px 1fr 1fr 90px;background:var(--bg);padding:6px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);border-bottom:1px solid var(--bd)}
+.cal-row{display:grid;grid-template-columns:36px 100px 1fr 1fr 90px;border-bottom:1px solid var(--bd);align-items:stretch;min-height:44px}
+.cal-row:hover{background:var(--bg)}
+.cal-row.sat-row{background:rgba(91,58,181,.03)}
+.cal-row.sat-row:hover{background:var(--ps)}
+.cal-num{display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mu);font-family:var(--mo);border-right:1px solid var(--bd)}
+.cal-date{padding:8px 10px;border-right:1px solid var(--bd);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.cal-date-d{font-size:13px;font-weight:700;color:var(--ac);font-family:var(--mo)}
+.cal-date-n{font-size:10px;color:var(--mu);font-weight:600;text-transform:uppercase}
+.cal-date-n.sat{color:var(--pu)}
+.cal-cell{border-right:1px solid var(--bd);display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;transition:background .1s;position:relative}
+.cal-cell:hover{background:var(--as)}
+.cal-cell.done-c{background:var(--gs)}
+.cal-cell.done-c .csn{color:var(--gn);text-decoration:line-through}
+.cal-cell.empty-c{cursor:default;color:var(--mu)}
+.cal-cell.empty-c:hover{background:transparent}
+.cs-ck{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.done-c .cs-ck{background:var(--gn);border-color:var(--gn);color:#fff}
+.csn{font-size:13px;font-weight:600}
+.cs-pb{font-size:10px;color:var(--rd);font-weight:700;font-family:var(--mo);margin-left:auto}
+.cal-actions{padding:4px 6px;display:flex;flex-direction:column;gap:3px;justify-content:center;align-items:center}
+/* STOCK */
+.stk-grp{margin-bottom:14px}
+.sg-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg);border-radius:7px;margin-bottom:5px}
+.sg-tit{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)}
+.sk-row{display:grid;grid-template-columns:2fr 75px 75px 85px 55px 50px;gap:5px;align-items:center;padding:5px 6px;border-bottom:1px solid var(--bd)}
+.sk-row.hdr{font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 6px}
+.dh{cursor:grab;color:var(--mu);font-size:13px;user-select:none}
+.si{width:68px;padding:4px 6px;border:1px solid var(--bd);border-radius:5px;font-family:var(--mo);font-size:13px;background:var(--sf);color:var(--tx);text-align:right}
+.add-row{display:grid;grid-template-columns:2fr 75px 75px auto;gap:5px;padding:5px 6px;align-items:end;border-top:1px solid var(--bd);margin-top:3px}
+/* GAS */
+.gas-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.gas-btn{background:var(--sf);border:2px solid var(--bd);border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.gas-btn:hover{border-color:var(--ac);background:var(--as)}
+.tp-btn{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:9px 13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;min-width:150px}
+.tp-btn:hover{border-color:var(--ac);background:var(--as)}
+.tp-btn-name{font-size:13px;font-weight:600;flex:1}
+.tp-btn-badge{background:var(--rd);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:var(--mo)}
+.gas-ico{font-size:22px}
+.gas-lbl{font-size:12px;font-weight:700;line-height:1.3}
+.gas-tot{font-size:20px;font-weight:700;font-family:var(--mo);color:var(--ac)}
+.gas-sub{font-size:11px;color:var(--mu)}
+/* PROV MOVEMENT */
+.mov-row{background:var(--bg);font-size:12px;color:var(--mu)}
+.mov-row td{padding:5px 10px!important;border-bottom:1px solid var(--bd)}
+/* PREV BOTTOM */
+.prev-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.miss-list{display:flex;flex-direction:column;gap:3px;max-height:280px;overflow-y:auto}
+.miss-item{background:var(--ams);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--am)}
+.pie-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pie-leg{display:flex;gap:14px;font-size:12px}
+.pld{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:3px}
+@media print{
+  .sb,.btn,.btn-print,.tabs,.ph,.no-print,.mo{display:none!important}
+  .page{display:none!important}
+  #page-pendientes{display:flex!important}
+  #page-pendientes .pc{padding:6px}
+  .pend-print{display:block!important}
+  #pend-live{display:none!important}
+  #pfilt{display:none!important}
+  body{background:#fff;color:#000}
+}
+.pend-print{display:none}
+/* FOLIOS */
+.fst{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;margin-bottom:10px;font-size:14px;font-weight:700}
+.fst-a{background:var(--rs);color:var(--rd)}
+.fst-m{background:var(--ams);color:var(--am)}
+.fst-b{background:var(--gs);color:var(--gn)}
+.folio-section{margin-bottom:22px}
+.folio-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:8px}
+.fc-alta{border-left:4px solid var(--rd)}
+.fc-media{border-left:4px solid var(--am)}
+.fc-baja{border-left:4px solid var(--gn)}
+.fc-closed{opacity:.5;filter:grayscale(.4)}
+.fc-top{display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap}
+.fc-num{font-size:16px;font-weight:700;font-family:var(--mo)}
+.fc-store{font-size:13px;font-weight:600;color:var(--ac)}
+.fc-who{font-size:11px;color:var(--mu)}
+.fc-desc{font-size:13px;margin-bottom:10px;line-height:1.5}
+.fc-bot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tbox{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-family:var(--mo);font-size:13px;font-weight:700;border:1.5px solid var(--bd);background:var(--bg)}
+.tok{background:var(--gs);border-color:var(--gn);color:var(--gn)}
+.twarn{background:var(--ams);border-color:var(--am);color:var(--am)}
+.tcrit{background:var(--rs);border-color:var(--rd);color:var(--rd);animation:blink 1s infinite}
+.tover{background:var(--rs);border-color:var(--rd);color:var(--rd)}
+.tclosed{background:var(--gs);border-color:var(--gn);color:var(--gn)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.55}}
+.fc-when{font-size:11px;color:var(--mu);font-family:var(--mo)}
+.empty-f{text-align:center;padding:24px;color:var(--mu);font-size:13px;background:var(--bg);border-radius:var(--r);border:1px dashed var(--bd)}
+</style>
+</head><body>
+<div class="app">
+<nav class="sb">
+  <div class="sb-logo"><div class="lg-t">MantControl</div><div class="lg-s">111 tiendas · 3 cuadrillas</div></div>
+  <div class="sb-sec">Principal</div>
+  <div class="ni active" onclick="nav('dashboard')">◈ Dashboard</div>
+  <div class="sb-sec">Operaciones</div>
+  <div class="ni" onclick="nav('preventivos')">✓ Preventivos</div>
+  <div class="ni" onclick="nav('pendientes')">⏳ Pendientes generales <span class="nbadge" id="bdg">0</span></div>
+  <div class="ni" onclick="nav('tiendapends')">📋 Pendientes por tienda</div>
+  <div class="sb-sec">Inventario</div>
+  <div class="ni" onclick="nav('stock')">🧰 Stock Material</div>
+  <div class="ni" onclick="nav('proveedores')">🚚 Proveedores</div>
+  <div class="ni" onclick="nav('pintura')">🎨 Pintura</div>
+  <div class="sb-sec">Gastos</div>
+  <div class="ni" onclick="nav('gasolina')">⛽ Gasolina</div>
+  <div class="ni" onclick="nav('gastos')">💰 Gastos</div>
+  <div class="sb-sec">Otros</div>
+  <div class="ni" onclick="nav('electrico')">⚡ Material Eléctrico</div>
+  <div class="sb-sec">Correctivos</div>
+  <div class="ni" onclick="nav('folios')">🚨 Folios <span class="nbadge" id="bdg-folios" style="display:none">0</span></div>
+</nav>
+<div class="main">
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="ph"><div class="pt">Dashboard</div><div class="psub" id="dfecha"></div></div>
+  <div class="pc">
+    <div class="sg">
+      <div class="sc acc"><div class="sl">Preventivos</div><div class="sv" id="d-prev">0</div><div class="ss">de 111</div><div class="pb" style="margin-top:6px"><div class="pf pbl" id="d-pbar" style="width:0%"></div></div></div>
+      <div class="sc red"><div class="sl">Pendientes</div><div class="sv" id="d-pend">0</div><div class="ss">abiertos</div></div>
+      <div class="sc grn"><div class="sl">Al día</div><div class="sv" id="d-ok">111</div><div class="ss">tiendas</div></div>
+      <div class="sc amb"><div class="sl">Gasolina</div><div class="sv" id="d-gas">$0</div><div class="ss">acumulado</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card"><div class="ct">Avance por cuadrilla</div><div id="d-cqs"></div></div>
+      <div class="card"><div class="ct">Pendientes abiertos</div><div id="d-plist"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PREVENTIVOS -->
+<div class="page" id="page-preventivos">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">Preventivos</div><div class="psub">Calendario mensual editable</div></div>
+      <div class="fg2 no-print">
+        <button class="btn" onclick="openMo('mo-hist')">📋 Historial</button>
+        <button class="btn" onclick="openMo('mo-tiendas')">✏ Editar tiendas</button>
+        <button class="btn bp2" onclick="openMo('mo-new-month')">📅 Nuevo mes</button>
+      </div>
+    </div>
+  </div>
+  <div class="pc">
+    <div class="tabs no-print">
+      <div class="tab active" onclick="stab('pv','jose',this)">ALFREDO</div>
+      <div class="tab" onclick="stab('pv','juan',this)">CHAN</div>
+      <div class="tab" onclick="stab('pv','esdras',this)">ESDRAS</div>
+    </div>
+    <div id="pv-jose" class="tc active"></div>
+    <div id="pv-juan" class="tc"></div>
+    <div id="pv-esdras" class="tc"></div>
+  </div>
+</div>
+
+<!-- PENDIENTES -->
+<div class="page" id="page-pendientes">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">Pendientes</div><div class="psub">Tareas por atender</div></div>
+      <div class="fg2 no-print">
+        <button class="btn btn-print" onclick="window.print()">🖨 Imprimir</button>
+        <button class="btn bp2" onclick="addPRow()">+ Agregar fila</button>
+      </div>
+    </div>
+  </div>
+  <div class="pc">
+    <div class="fg2 no-print" style="margin-bottom:12px;flex-wrap:wrap;gap:5px" id="pfilt">
+      <button class="btn bsm active-f" onclick="setF('todos',this)">Todos</button>
+      <button class="btn bsm" onclick="setF('abierto',this)">Abiertos</button>
+      <button class="btn bsm" onclick="setF('resuelto',this)">Resueltos</button>
+    </div>
+    <div id="pend-live" class="card no-print" style="padding:0;overflow:hidden">
+      <table class="dt">
+        <thead><tr><th>Tienda</th><th>Descripción</th><th>Fecha</th><th>Estado</th><th>✕</th></tr></thead>
+        <tbody id="ptbody"></tbody>
+      </table>
+    </div>
+    <div class="pend-print" id="pend-print-area">
+      <div style="text-align:center;margin-bottom:12px"><h2 style="font-size:18px;font-family:sans-serif">Pendientes — Semana</h2><div style="font-size:12px;color:#666;font-family:sans-serif" id="print-fecha"></div></div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:sans-serif">
+        <thead><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:5px 8px">Tienda</th><th style="border:1px solid #ccc;padding:5px 8px">Descripción</th><th style="border:1px solid #ccc;padding:5px 8px">Fecha</th><th style="border:1px solid #ccc;padding:5px 8px">✓ Atendido</th></tr></thead>
+        <tbody id="print-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PENDIENTES POR TIENDA -->
+<div class="page" id="page-tiendapends">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">📋 Pendientes por Tienda</div><div class="psub">Checklist persistente por cuadrilla y tienda</div></div>
+    </div>
+    <div class="tabs" style="margin-top:12px">
+      <div class="tab active" onclick="stabTP('jose',this)">ALFREDO</div>
+      <div class="tab" onclick="stabTP('juan',this)">CHAN</div>
+      <div class="tab" onclick="stabTP('esdras',this)">ESDRAS</div>
+    </div>
+  </div>
+  <div class="pc" id="tp-content"></div>
+</div>
+
+<!-- MODAL PENDIENTES TIENDA -->
+<div class="mo" id="mo-tp">
+  <div class="mbox" style="width:520px;max-height:85vh;display:flex;flex-direction:column">
+    <div class="mh"><div class="mt2" id="mo-tp-title">Pendientes</div><button class="mc" onclick="closeMo('mo-tp')">✕</button></div>
+    <div style="flex:1;overflow-y:auto;padding:0 2px">
+      <div id="mo-tp-list" style="margin-bottom:10px"></div>
+      <div style="display:flex;gap:7px;padding:10px 0 4px;border-top:1px solid var(--bd)">
+        <input class="fi" id="mo-tp-input" placeholder="Nuevo pendiente… Enter para agregar"
+          onkeydown="tpInputKey(event)"
+          style="flex:1">
+        <button class="btn bp2" id="mo-tp-save" onclick="tpAddItem()">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- STOCK -->
+<div class="page" id="page-stock">
+
+  <div class="ph"><div class="pt">Stock de Material</div><div class="psub">Inventario semanal por cuadrilla</div></div>
+  <div class="pc">
+    <div class="tabs"><div class="tab active" onclick="stab('mt','jose',this)">ALFREDO</div><div class="tab" onclick="stab('mt','juan',this)">CHAN</div><div class="tab" onclick="stab('mt','esdras',this)">ESDRAS</div></div>
+    <div id="mt-jose" class="tc active"></div><div id="mt-juan" class="tc"></div><div id="mt-esdras" class="tc"></div>
+  </div>
+</div>
+
+<!-- PROVEEDORES -->
+<div class="page" id="page-proveedores">
+  <div class="ph"><div class="pt">Proveedores</div><div class="psub">Registro y movimientos de material</div></div>
+  <div class="pc">
+    <div class="tabs">
+      <div class="tab active" onclick="stab('pv2','p1',this)">Proveedor 1 — General</div>
+      <div class="tab" onclick="stab('pv2','p2',this)">Proveedor 2 — PTRP</div>
+      <div class="tab" onclick="stab('pv2','p3',this)">Proveedor 3 — Plafón</div>
+    </div>
+    <div id="pv2-p1" class="tc active"></div><div id="pv2-p2" class="tc"></div><div id="pv2-p3" class="tc"></div>
+  </div>
+</div>
+
+<!-- PINTURA -->
+<div class="page" id="page-pintura">
+  <div class="ph"><div class="pt">Control de Pintura</div><div class="psub">Por cuadrilla · stock · comprobantes · cierre</div></div>
+  <div class="pc">
+    <div class="tabs">
+      <div class="tab active" onclick="stab('cq','jose',this)">ALFREDO</div>
+      <div class="tab" onclick="stab('cq','juan',this)">CHAN</div>
+      <div class="tab" onclick="stab('cq','esdras',this)">ESDRAS</div>
+    </div>
+    <div id="cq-jose" class="tc active"></div>
+    <div id="cq-juan" class="tc"></div>
+    <div id="cq-esdras" class="tc"></div>
+  </div>
+</div>
+
+<!-- GASOLINA -->
+<div class="page" id="page-gasolina">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">Gasolina</div><div class="psub">Cargas por vehículo</div></div>
+      <button class="btn" onclick="openMo('mo-gas-newmes')" style="font-size:12px">📅 Nuevo mes</button>
+    </div>
+  </div>
+  <div class="pc">
+    <div id="gas-mes-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div class="gas-btns" id="gas-btns"></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="dt"><thead><tr><th>Vehículo</th><th>Monto ($)</th><th>Litros</th><th>Día</th><th>Fecha</th><th>Notas</th><th>✕</th></tr></thead>
+      <tbody id="gas-tbody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- GASTOS -->
+<div class="page" id="page-gastos">
+  <div class="ph">
+    <div class="fb2"><div><div class="pt">Gastos</div><div class="psub">Registro general</div></div>
+    <div style="display:flex;gap:7px">
+      <button class="btn" onclick="openMo('mo-gasto-newmes')" style="font-size:12px">📅 Nuevo mes</button>
+      <button class="btn bp2" onclick="openMo('mo-gasto')">+ Registrar gasto</button>
+    </div></div>
+  </div>
+  <div class="pc">
+    <div id="gt-mes-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <div class="sg">
+      <div class="sc acc"><div class="sl">Total mes</div><div class="sv" id="gt-total">$0</div></div>
+      <div class="sc red"><div class="sl">Mayor gasto</div><div class="sv" id="gt-max">$0</div></div>
+      <div class="sc grn"><div class="sl">Registros</div><div class="sv" id="gt-cnt">0</div></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="dt"><thead><tr><th>Concepto</th><th>Monto</th><th>Categoría</th><th>Fecha</th><th>Notas</th><th>✕</th></tr></thead>
+      <tbody id="gt-tbody"></tbody></table>
+    </div>
+    <div id="gt-hist" style="margin-top:18px"></div>
+  </div>
+</div>
+<!-- MATERIAL ELECTRICO -->
+<div class="page" id="page-electrico">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">⚡ Material Eléctrico</div><div class="psub">Control de stock y uso por cuadrilla</div></div>
+      <button class="btn bp2" onclick="openMo('mo-elec-add')">+ Agregar material</button>
+    </div>
+  </div>
+  <div class="pc">
+    <div class="tabs">
+      <div class="tab active" onclick="stabElec('jose',this)">ALFREDO</div>
+      <div class="tab" onclick="stabElec('juan',this)">CHAN</div>
+      <div class="tab" onclick="stabElec('esdras',this)">ESDRAS</div>
+      <div class="tab" onclick="stabElec('general',this)">General</div>
+    </div>
+    <div id="elec-content"></div>
+  </div>
+</div>
+
+<!-- FOLIOS -->
+<div class="page" id="page-folios">
+  <div class="ph">
+    <div class="fb2">
+      <div><div class="pt">Folios de Correctivos</div><div class="psub">Control de tiempos — Alta 6h · Media 72h · Baja 30 días</div></div>
+      <button class="btn bp2" onclick="openMo('mo-add-folio')">+ Registrar folio</button>
+    </div>
+  </div>
+  <div class="pc" id="folios-pc"></div>
+</div>
+</div></div>
+
+<!-- MODALS -->
+<div class="mo" id="mo-hist"><div class="mbox"><div class="mh"><div class="mt2">Historial de meses</div><button class="mc" onclick="closeMo('mo-hist')">✕</button></div><div id="hist-ct"></div></div></div>
+
+<div class="mo" id="mo-gas-newmes">
+  <div class="mbox" style="width:380px">
+    <div class="mh"><div class="mt2">📅 Nuevo mes — Gasolina</div><button class="mc" onclick="closeMo('mo-gas-newmes')">✕</button></div>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:14px">El mes actual quedará en el historial y podrás consultarlo desde esta misma pantalla.</p>
+    <div class="fg"><label class="fl">Mes a iniciar</label><input type="month" class="fi" id="gas-nm-mes"></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-gas-newmes')">Cancelar</button><button class="btn bp2" onclick="doGasNewMes()">Iniciar mes</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-gasto-newmes">
+  <div class="mbox" style="width:380px">
+    <div class="mh"><div class="mt2">📅 Nuevo mes — Gastos</div><button class="mc" onclick="closeMo('mo-gasto-newmes')">✕</button></div>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:14px">El mes actual quedará en el historial y podrás consultarlo desde esta misma pantalla.</p>
+    <div class="fg"><label class="fl">Mes a iniciar</label><input type="month" class="fi" id="gt-nm-mes"></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-gasto-newmes')">Cancelar</button><button class="btn bp2" onclick="doGastoNewMes()">Iniciar mes</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-new-month">
+  <div class="mbox" style="width:440px">
+    <div class="mh"><div class="mt2">📅 Iniciar nuevo mes</div><button class="mc" onclick="closeMo('mo-new-month')">✕</button></div>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:14px">Esto guardará el mes actual al historial, desmarcará todas las tiendas y generará el nuevo calendario. Los pendientes de tienda se conservan.</p>
+    <div class="fr">
+      <div class="fg"><label class="fl">Cuadrilla</label>
+        <select class="fi" id="nm-cq"><option value="jose">ALFREDO</option><option value="juan">CHAN</option><option value="esdras">ESDRAS</option></select>
+      </div>
+      <div class="fg"><label class="fl">Mes a generar</label>
+        <input type="month" class="fi" id="nm-mes">
+      </div>
+    </div>
+    <div class="fr" style="margin-top:6px">
+      <div class="fg"><label class="fl">Tiendas por día (lun–vie)</label>
+        <input type="number" class="fi" id="nm-tpd" min="1" max="10" value="2" placeholder="2">
+      </div>
+      <div class="fg" style="justify-content:flex-end;padding-top:18px"><span class="txt-m" style="font-size:11px">Los pendientes de cada tienda se mantienen al cambiar de mes</span></div>
+    </div>
+    <p style="font-size:12px;color:var(--mu);margin-top:8px;margin-bottom:12px">Puedes editar cuántas tiendas van cada día directamente en el calendario.</p>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-new-month')">Cancelar</button><button class="btn bp2" onclick="doNewMonth()">Generar calendario</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-edit-row">
+  <div class="mbox" style="width:460px">
+    <div class="mh"><div class="mt2">✏ Editar día del calendario</div><button class="mc" onclick="closeMo('mo-edit-row')">✕</button></div>
+    <div id="er-content"></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-edit-row')">Cerrar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-tiendas">
+  <div class="mbox" style="width:560px">
+    <div class="mh"><div class="mt2">✏ Editar tiendas</div><button class="mc" onclick="closeMo('mo-tiendas')">✕</button></div>
+    <div class="tabs" style="margin-bottom:12px">
+      <div class="tab active" onclick="stab('et','jose',this)">ALFREDO</div>
+      <div class="tab" onclick="stab('et','juan',this)">CHAN</div>
+      <div class="tab" onclick="stab('et','esdras',this)">ESDRAS</div>
+    </div>
+    <div id="et-jose" class="tc active"></div><div id="et-juan" class="tc"></div><div id="et-esdras" class="tc"></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-gasto">
+  <div class="mbox">
+    <div class="mh"><div class="mt2">Registrar gasto</div><button class="mc" onclick="closeMo('mo-gasto')">✕</button></div>
+    <div class="fg"><label class="fl">Concepto</label><input class="fi" id="gt-c" placeholder="Describe el gasto..."></div>
+    <div class="fr"><div class="fg"><label class="fl">Monto ($)</label><input type="number" class="fi" id="gt-m" min="0"></div><div class="fg"><label class="fl">Categoría</label><select class="fi" id="gt-k"><option>Desazolve</option><option>Agua martin</option><option>Agua felipe</option><option>Agua externo</option><option>Herramientas</option><option>Transporte</option><option>Materiales</option><option>Servicios</option><option>Otro</option></select></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Fecha</label><input type="date" class="fi" id="gt-f"></div><div class="fg"><label class="fl">Notas</label><input class="fi" id="gt-n"></div></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-gasto')">Cancelar</button><button class="btn bp2" onclick="saveGasto()">Guardar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-gas-q">
+  <div class="mbox" style="width:300px">
+    <div class="mh"><div class="mt2" id="mg-title">Carga gasolina</div><button class="mc" onclick="closeMo('mo-gas-q')">✕</button></div>
+    <div class="fg"><label class="fl">Monto cargado ($)</label><input type="number" class="fi" id="mg-monto" min="0" placeholder="0.00" onkeydown="if(event.key==='Enter')document.getElementById('mg-litros').focus()"></div>
+    <div class="fg"><label class="fl">Litros (opcional)</label><input type="number" class="fi" id="mg-litros" min="0" step="0.1" onkeydown="if(event.key==='Enter')saveGas()"></div>
+    <div class="fg"><label class="fl">Fecha</label><input type="date" class="fi" id="mg-fecha"></div>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="mg-notas" onkeydown="if(event.key==='Enter')saveGas()"></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-gas-q')">Cancelar</button><button class="btn bp2" onclick="saveGas()">Registrar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-store-pend">
+  <div class="mbox" style="width:560px">
+    <div class="mh"><div class="mt2" id="msp-title">Pendientes de tienda</div><button class="mc" onclick="closeMo('mo-store-pend')">✕</button></div>
+    <div id="msp-content"></div>
+    <div style="margin-top:14px;border-top:1px solid var(--bd);padding-top:12px">
+      <div class="fl" style="margin-bottom:6px">Agregar pendiente</div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <input class="fi" id="sp-new" placeholder="Describe el pendiente… Enter" onkeydown="if(event.key==='Enter')addSP()">
+        <select class="fi" id="sp-pri" style="width:100px"><option>Normal</option><option>Alta</option><option>Urgente</option></select>
+        <button class="btn bp2 bsm" onclick="addSP()">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="mo-add-folio">
+  <div class="mbox" style="width:520px">
+    <div class="mh"><div class="mt2">🚨 Registrar folio</div><button class="mc" onclick="closeMo('mo-add-folio')">✕</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:9px">
+      <div class="fg"><label class="fl">N° Folio</label><input class="fi" id="fl-num" placeholder="Ej: 123456"></div>
+      <div class="fg"><label class="fl">Prioridad</label>
+        <select class="fi" id="fl-pri">
+          <option value="ALTA">🔴 ALTA — 6 horas</option>
+          <option value="MEDIA">🟡 MEDIA — 72 horas</option>
+          <option value="BAJA">🟢 BAJA — 30 días</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Tienda</label>
+        <input class="fi" id="fl-tienda" placeholder="Nombre de tienda" list="fl-tiendas-list">
+        <datalist id="fl-tiendas-list"></datalist>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Descripción del correctivo</label><textarea class="fi" id="fl-desc" placeholder="Describe el problema reportado..." style="min-height:70px;resize:vertical"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px">
+      <div class="fg"><label class="fl">Fecha y hora de apertura</label><input type="datetime-local" class="fi" id="fl-fecha"></div>
+      <div class="fg"><label class="fl">Reportado por</label><input class="fi" id="fl-rep" placeholder="Nombre o usuario"></div>
+    </div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-add-folio')">Cancelar</button><button class="btn bp2" onclick="saveFolio()">Registrar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-close-folio">
+  <div class="mbox" style="width:440px">
+    <div class="mh"><div class="mt2" id="cf-title">Cerrar folio</div><button class="mc" onclick="closeMo('mo-close-folio')">✕</button></div>
+    <div class="fg"><label class="fl">Solución aplicada</label><textarea class="fi" id="cf-sol" placeholder="Describe cómo se resolvió..." style="min-height:80px;resize:vertical"></textarea></div>
+    <div class="fg"><label class="fl">Técnico que atendió</label><input class="fi" id="cf-tec" placeholder="Nombre"></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-close-folio')">Cancelar</button><button class="btn bp2" onclick="doCloseFolio()">Cerrar folio</button></div>
+  </div>
+</div>
+<div class="mo" id="mo-elec-add">
+  <div class="mbox" style="width:480px">
+    <div class="mh"><div class="mt2">⚡ Agregar material eléctrico</div><button class="mc" onclick="closeMo('mo-elec-add')">✕</button></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Cuadrilla / Área</label>
+        <select class="fi" id="elec-cq"><option value="jose">ALFREDO</option><option value="juan">CHAN</option><option value="esdras">ESDRAS</option><option value="general">General</option></select>
+      </div>
+      <div class="fg"><label class="fl">Artículo</label><input class="fi" id="elec-art" placeholder="Ej: Cable 12, Breaker 15A..."></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Cantidad</label><input type="number" class="fi" id="elec-cant" min="0" value="1"></div>
+      <div class="fg"><label class="fl">Unidad</label>
+        <select class="fi" id="elec-unit"><option>pza</option><option>m</option><option>rollo</option><option>caja</option><option>par</option><option>kg</option></select>
+      </div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Fecha entrada</label><input type="date" class="fi" id="elec-fecha"></div>
+      <div class="fg"><label class="fl">Notas</label><input class="fi" id="elec-notas" placeholder="Opcional"></div>
+    </div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-elec-add')">Cancelar</button><button class="btn bp2" onclick="saveElec()">Guardar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-elec-use">
+  <div class="mbox" style="width:400px">
+    <div class="mh"><div class="mt2" id="elecuse-title">Registrar uso</div><button class="mc" onclick="closeMo('mo-elec-use')">✕</button></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Cantidad usada</label><input type="number" class="fi" id="elecuse-cant" min="1" value="1"></div>
+      <div class="fg"><label class="fl">Fecha</label><input type="date" class="fi" id="elecuse-fecha"></div>
+    </div>
+    <div class="fg"><label class="fl">Notas / Dónde se usó</label><input class="fi" id="elecuse-notas" placeholder="Tienda o descripción..."></div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-elec-use')">Cancelar</button><button class="btn bp2" onclick="doElecUse()">Registrar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-prov-mov">
+  <div class="mbox">
+    <div class="mh"><div class="mt2" id="pmov-title">Registrar movimiento</div><button class="mc" onclick="closeMo('mo-prov-mov')">✕</button></div>
+    <div id="pmov-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}};
+const SS=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+const DEFT={
+  jose:['ABASOLO','AVIACION','BUGAMBILIA','CARDENAS','CASETA ESTACION DON','CHAVEZ','CONIFERAS','DIECISEIS','ESTACION DON','GALVEZ','GARCIA MORALES','GRIJALVA','HUMAYA','JACARANDA','JUAN DE LA BARRERA','LA HERRADURA','LA JAULA','LAURELES','LAS BOCAS','LAS PILAS','MAYO FUERTE','MELGAR','NAVOJOA','NOGALITOS','ORO NEGRO','PLAZA SONORA','PROGRESISTA','PUEBLO NUEVO','QUINTA','RIO MAYO','SANTA MARIA','SONORA','TEPEYAC','TESIA','TOLTECAS','UNIVERSIDAD'],
+  juan:['ALMADA','AMADO NERVO','BARRERA','BELTRONES','BRISAS DEL VALLE','CHUCARIT','COHUIRIMPO','COMANDANCIA','EMILIANO','FATIMA','GOYA','GUERRERO','JIMENEZ','LA DEPORTIVA','LA JOYA','LAS VIAS','LEONA VICARIO','LOMA DEL REFUGIO','MAS','MARIA FELIX','MORELOS','NO REELECCION','NUEVA ESMERALDA','ORTIZ TIRADO','PUEBLO MAYO','PUEBLO VIEJO','ROTARIO','SALIDO','SAN IGNACIO','SOP','SOSA CHAVEZ','TALAMANTE','TETANCHOPO','TIERRA BLANCA','TOLEDO','VILLA LOURDES'],
+  esdras:['14 DE ENERO','5 DE JUNIO','5 DE MAYO','BACOBAMPO','BASCONCOBE','BRAVO','BUAYSIACOBE','CAMPECHE','CARRILLO','CENTENARIO','CENTRO','CHUCARIT','DIAZ','EL ALHUATE','ETCHOJOA','ETCHOROPO','HERMOSILLO','HUATABAMPO','JITO','JUPARE','KARAM','LA CURVA','LOS GENERALES','MATAMOROS','MAYITOS','MORALES','NUEVO LEON','PALACIO','PERIFERICO NORTE','PROGRESO','QUIJADA','RIITO','RODRIGUEZ','SAN PEDRO','TECNOLOGICO','UNION','VALLE DEL MAYO','YAVAROS']
+};
+
+let TIENDAS=LS('t5')||JSON.parse(JSON.stringify(DEFT));
+let prevDone=LS('pd5')||{jose:[],juan:[],esdras:[]};
+let prevHist=LS('ph5')||{};
+// calData[cq] = {month:'2025-04', rows:[{date,stores:[s1,s2]}]}
+let calData=LS('cd5')||{jose:null,juan:null,esdras:null};
+let storePends=LS('sp5')||{};
+let pendientes=LS('pn5')||[];
+let stockMat=LS('sm5')||{
+  jose:[{cat:'Material',items:[{n:'Sellador',asig:20,act:20},{n:'Brochas',asig:15,act:15}]},{cat:'Pintura',items:[{n:'Pintura blanca',asig:10,act:10}]},{cat:'Accesorios',items:[{n:'Tornillería',asig:200,act:200}]}],
+  juan:[{cat:'Material',items:[{n:'Sellador',asig:20,act:20}]},{cat:'Pintura',items:[{n:'Pintura blanca',asig:10,act:10}]},{cat:'Accesorios',items:[{n:'Tornillería',asig:200,act:200}]}],
+  esdras:[{cat:'Material',items:[{n:'Sellador',asig:20,act:20}]},{cat:'Pintura',items:[{n:'Pintura blanca',asig:10,act:10}]},{cat:'Accesorios',items:[{n:'Tornillería',asig:200,act:200}]}]
+};
+let provData=LS('pv5')||{p1:[],p2:[],p3:[]};
+// provData[pid] = [{art, cant, fecha, comp, notas, movs:[{tipo,cant,fecha,notas}]}]
+let pintStock=LS('ps5')||{jose:[],juan:[],esdras:[]};
+let pintComp=LS('pc5')||{jose:[],juan:[],esdras:[]};
+let gasData=LS('gd5')||[];
+let gastoData=LS('gtd5')||[];
+let gasHist=LS('gasHist5')||{};
+let gtHist=LS('gtHist5')||{};
+let gasMesActual=LS('gasMesAct')||null;
+let gtMesActual=LS('gtMesAct')||null;
+let elecData=LS('elec5')||{jose:[],juan:[],esdras:[],general:[]};
+let elecUseTarget=null;
+let pendFilt='todos';
+let dragSrc=null;
+let gasVeh='';
+let activeCq='jose';
+let activeSP='';
+let provMovItem=null;
+let pieCharts={};
+
+function save(){
+  SS('t5',TIENDAS);SS('pd5',prevDone);SS('ph5',prevHist);SS('cd5',calData);
+  SS('sp5',storePends);SS('pn5',pendientes);SS('sm5',stockMat);SS('pv5',provData);
+  SS('ps5',pintStock);SS('pc5',pintComp);SS('gd5',gasData);SS('gtd5',gastoData);
+  SS('elec5',elecData);SS('gasHist5',gasHist);SS('gtHist5',gtHist);
+  SS('gasMesAct',gasMesActual);SS('gtMesAct',gtMesActual);
+  SS('tpends5',storePends);
+}
+function today(){return new Date().toISOString().split('T')[0]}
+function fmt(s){if(!s)return'';const[y,m,d]=s.split('-');return d+'/'+m+'/'+y}
+function dayN(s){if(!s)return'';return['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][new Date(s+'T12:00:00').getDay()]}
+function monthLbl(mk){
+  if(!mk){const d=new Date();mk=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');}
+  const[y,m]=mk.split('-');
+  const ms=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  return ms[+m]+' '+y;
+}
+function curMonthKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');}
+
+// NAV
+function nav(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.ni').forEach(x=>{if(x.getAttribute('onclick')==="nav('"+p+"')")x.classList.add('active')});
+  
+
+const renders={dashboard:renderDash,preventivos:renderPrev,pendientes:renderPend,tiendapends:renderTP,stock:renderStock,proveedores:renderProv,pintura:renderPint,gasolina:renderGas,gastos:renderGastos,folios:renderFolios,electrico:renderElec};
+try{if(renders[p])renders[p]();}catch(e){console.error('Error en',p,e);}}
+function stab(pre,id,el){
+  const par=el.closest('.mo')||el.closest('.page');
+  par.querySelectorAll(':scope > .tabs > .tab, :scope > .pc > .tabs > .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  par.querySelectorAll(':scope > .tc, :scope > .pc > .tc').forEach(t=>t.classList.remove('active'));
+  const tc=document.getElementById(pre+'-'+id);if(tc)tc.classList.add('active');
+  if(pre==='pv'){activeCq=id;renderPrevTab(id);}
+  if(pre==='mt') renderStockTab(id);
+  if(pre==='pv2') renderProvTab(id);
+  if(pre==='et') renderEditT(id);
+  if(pre==='cq') renderPintCq(id);
+}
+function openMo(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='mo-hist') renderHist();
+  if(id==='mo-tiendas') renderEditT('jose');
+  if(id==='mo-gasto') document.getElementById('gt-f').value=today();
+  if(id==='mo-new-month'){
+    const d=new Date();
+    document.getElementById('nm-mes').value=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');
+  }
+}
+function closeMo(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+// DASHBOARD
+function renderDash(){
+  document.getElementById('dfecha').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tp=prevDone.jose.length+prevDone.juan.length+prevDone.esdras.length;
+  document.getElementById('d-prev').textContent=tp;
+  document.getElementById('d-pbar').style.width=Math.round(tp/111*100)+'%';
+  const op=pendientes.filter(p=>p.estado==='abierto').length;
+  document.getElementById('d-pend').textContent=op;
+  document.getElementById('d-ok').textContent=111-[...new Set(pendientes.filter(p=>p.estado==='abierto').map(p=>p.tienda))].length;
+  document.getElementById('d-gas').textContent='$'+gasData.reduce((a,b)=>a+parseFloat(b.monto||0),0).toFixed(0);
+  const cqs=[{k:'jose',n:'ALFREDO'},{k:'juan',n:'CHAN'},{k:'esdras',n:'ESDRAS'}];
+  document.getElementById('d-cqs').innerHTML=cqs.map(c=>{
+    const t=TIENDAS[c.k].length,d=prevDone[c.k].length,pct=t?Math.round(d/t*100):0;
+    return`<div style="margin-bottom:11px"><div class="fb2" style="margin-bottom:3px"><span style="font-size:13px;font-weight:600">${c.n}</span><span class="txt-m">${d}/${t}</span></div><div class="pb"><div class="pf pbl" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+  const abiertos=pendientes.filter(p=>p.estado==='abierto');
+  document.getElementById('d-plist').innerHTML=abiertos.length
+    ?abiertos.map(p=>`<div style="padding:7px 0;border-bottom:1px solid var(--bd);font-size:13px"><strong>${p.tienda||'—'}</strong> <span class="txt-m">— ${(p.desc||'').slice(0,60)}</span></div>`).join('')
+    :'<div class="emp">Sin pendientes abiertos ✓</div>';
+  document.getElementById('bdg').textContent=op;
+}
+
+// ===== CALENDARIO =====
+function buildCal(cq, monthKey, tiendasPorDia){
+  tiendasPorDia=tiendasPorDia||2;
+  const [y,m]=monthKey.split('-').map(Number);
+  const rows=[];
+  const d=new Date(y,m-1,1);
+  const tiendas=[...TIENDAS[cq]];
+  let ti=0;
+  while(d.getMonth()===m-1){
+    const dow=d.getDay();
+    if(dow>=1&&dow<=6){ // lun-sab
+      const dateStr=d.toISOString().split('T')[0];
+      const stores=[];
+      if(dow<=5){ // lun-vie
+        for(let j=0;j<tiendasPorDia&&ti<tiendas.length;j++,ti++) stores.push(tiendas[ti]);
+      }
+      rows.push({date:dateStr,stores});
+    }
+    d.setDate(d.getDate()+1);
+  }
+  return rows;
+}
+function ensureCal(cq){
+  const mk=curMonthKey();
+  if(!calData[cq]||calData[cq].month!==mk){
+    calData[cq]={month:mk,rows:buildCal(cq,mk)};
+    save();
+  }
+}
+
+function renderPrev(){renderPrevTab('jose')}
+function renderPrevTab(cq){
+  activeCq=cq;
+  ensureCal(cq);
+  const rows=calData[cq].rows;
+  const done=prevDone[cq];
+  const allT=TIENDAS[cq];
+  const totalDone=done.length;
+  const pct=allT.length?Math.round(totalDone/allT.length*100):0;
+  const mk=calData[cq].month;
+  const el=document.getElementById('pv-'+cq);
+  const cqLabel={jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'};
+  el.innerHTML=`
+    <div class="fb2" style="margin-bottom:12px">
+      <div><div class="sh">Cuadrilla ${cqLabel[cq]||cq.toUpperCase()} <span class="ml">${monthLbl(mk)}</span></div><div class="txt-m">${totalDone} de ${allT.length} completadas · ${pct}%</div></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
+      <div class="cal-header" style="grid-template-columns:36px 100px 1fr 80px"><span>#</span><span>Fecha</span><span>Tiendas del día</span><span>Acciones</span></div>
+      ${rows.map((row,ri)=>{
+        const isSat=new Date(row.date+'T12:00:00').getDay()===6;
+        const stores=row.stores||[];
+        const allDone=stores.length>0&&stores.every(s=>done.includes(s));
+        const anyPend=stores.reduce((a,s)=>a+((storePends[s]||[]).filter(x=>x.estado==='abierto').length),0);
+        return`<div class="cal-row${isSat?' sat-row':''}" style="grid-template-columns:36px 100px 1fr 80px;min-height:auto">
+          <div class="cal-num">${ri+1}</div>
+          <div class="cal-date"><span class="cal-date-d">${fmt(row.date)}</span><span class="cal-date-n${isSat?' sat':''}">${dayN(row.date)}</span></div>
+          <div style="padding:6px 10px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--bd)">
+            ${stores.length?stores.map(s=>{
+              const d=done.includes(s);
+              const pa=(storePends[s]||[]).filter(x=>x.estado==='abierto').length;
+              const isRev=(row.revision||[]).includes(s);
+              return`<div style="display:flex;align-items:center;gap:6px;padding:3px 5px;border-radius:6px;${isRev?'background:var(--ams);':''}${d&&!isRev?'background:var(--gs)':''}">
+                <div class="cs-ck" style="cursor:pointer;${d?'background:var(--gn);border-color:var(--gn);color:#fff':''}" onclick="togglePrev('${cq}','${s.replace(/'/g,"\\'")}')">
+                  ${d?'✓':''}
+                </div>
+                <span class="csn" style="cursor:pointer;flex:1;${d?'text-decoration:line-through;color:var(--gn)':''}${isRev?';font-weight:600;color:var(--am)':''}" onclick="togglePrev('${cq}','${s.replace(/'/g,"\\'")}')">
+                  ${s}
+                </span>
+                ${isRev?'<span title="Revisión especial" style="font-size:13px">⭐</span>':''}
+                <span onclick="toggleRevision('${cq}',${ri},'${s.replace(/'/g,"\\'")}\")" title="${isRev?'Quitar revisión especial':'Marcar como revisión especial'}" style="cursor:pointer;font-size:12px;opacity:${isRev?1:.3}">★</span>
+                ${pa?`<span class="cs-pb" onclick="openTP('${cq}','${s.replace(/'/g,"\\'")}\")" title="Ver pendientes de ${s}" style="cursor:pointer">${pa}📋</span>`:'<span onclick="openTP(\''+cq+'\',\''+s.replace(/'/g,"\\'")+'\')" title="Pendientes de '+s+'" style="cursor:pointer;opacity:.3;font-size:11px">📋</span>'}
+              </div>`;
+            }).join(''):`<span class="txt-m" style="font-size:12px">${isSat?'Sábado':'—'}</span>`}
+          </div>
+          <div class="cal-actions" style="flex-direction:row;gap:4px;flex-wrap:wrap;padding:4px 6px">
+            <button class="btn bsm" onclick="openEditRow('${cq}',${ri})" title="Agregar/quitar tiendas">✏</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="prev-bottom">
+      <div class="card">
+        <div class="ct">Tiendas faltantes (${allT.filter(t=>!done.includes(t)).length})</div>
+        <div class="miss-list">${allT.filter(t=>!done.includes(t)).map(t=>`<div class="miss-item">${t}</div>`).join('')||'<div class="emp" style="padding:10px;color:var(--gn)">¡Todas completadas! 🎉</div>'}</div>
+      </div>
+      <div class="card">
+        <div class="ct">Progreso del mes</div>
+        <div class="pie-wrap">
+          <canvas id="pie-${cq}" width="170" height="170" style="max-width:170px"></canvas>
+          <div class="pie-leg">
+            <span><span class="pld" style="background:var(--gn)"></span>Listas: ${totalDone}</span>
+            <span><span class="pld" style="background:var(--bd)"></span>Faltan: ${allT.length-totalDone}</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  setTimeout(()=>{
+    const cv=document.getElementById('pie-'+cq);if(!cv)return;
+    if(pieCharts[cq])pieCharts[cq].destroy();
+    const dk=matchMedia('(prefers-color-scheme:dark)').matches;
+    pieCharts[cq]=new Chart(cv,{type:'doughnut',data:{labels:['Listas','Faltan'],datasets:[{data:[totalDone,allT.length-totalDone],backgroundColor:[dk?'#2ec882':'#1a8a5a',dk?'#2e2e28':'#e8e4db'],borderWidth:0}]},options:{cutout:'65%',plugins:{legend:{display:false}}}});
+  },60);
+}
+function togglePrev(cq,t){
+  const idx=prevDone[cq].indexOf(t);
+  if(idx>-1)prevDone[cq].splice(idx,1);
+  else{prevDone[cq].push(t);const h=LS('pvh_'+cq)||{};h[t]={fecha:today()};SS('pvh_'+cq,h);}
+  save();renderPrevTab(cq);
+}
+
+// EDITAR FILA CALENDARIO
+function openEditRow(cq,ri){
+  const row=calData[cq].rows[ri];
+  const allT=TIENDAS[cq];
+  const usedElsewhere=new Set(calData[cq].rows.reduce((a,r,i)=>i!==ri?[...a,...r.stores]:a,[]));
+  document.getElementById('er-content').innerHTML=`
+    <div style="margin-bottom:12px"><span class="txt-m">${dayN(row.date)}</span> <strong>${fmt(row.date)}</strong></div>
+    <div style="margin-bottom:10px">
+      <div class="fl" style="margin-bottom:6px">Tiendas asignadas a este día (clic para quitar)</div>
+      <div id="er-chips" style="display:flex;flex-wrap:wrap;gap:5px;min-height:32px;padding:6px;border:1px solid var(--bd);border-radius:7px;background:var(--bg);margin-bottom:8px">
+        ${(row.stores||[]).map(s=>`<span style="display:inline-flex;align-items:center;gap:4px;background:var(--as);color:var(--ac);border-radius:5px;padding:3px 8px;font-size:12px;font-weight:600;cursor:pointer" onclick="removeStoreFromRow('${cq}',${ri},'${s.replace(/'/g,"\\'")}')">
+          ${s} <span style="font-size:11px;color:var(--rd)">✕</span>
+        </span>`).join('')||'<span style="color:var(--mu);font-size:12px">Sin tiendas — agrega abajo</span>'}
+      </div>
+      <div class="fl" style="margin-bottom:6px">Buscar y agregar tienda</div>
+      <div style="display:flex;gap:7px">
+        <input class="fi" id="er-search" placeholder="Escribe el nombre…" list="er-tlist" oninput="filterErList('${cq}',${ri})">
+        <datalist id="er-tlist">${allT.filter(t=>!(row.stores||[]).includes(t)).map(t=>`<option>${t}</option>`).join('')}</datalist>
+        <button class="btn bp2 bsm" onclick="addStoreToRow('${cq}',${ri})">+ Agregar</button>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Cambiar fecha</label>
+      <input type="date" class="fi" value="${row.date}" onchange="saveEditDate('${cq}',${ri},this.value)">
+    </div>`;
+  openMo('mo-edit-row');
+  setTimeout(()=>document.getElementById('er-search')?.focus(),100);
+}
+function addStoreToRow(cq,ri){
+  const v=document.getElementById('er-search').value.trim().toUpperCase();
+  if(!v)return;
+  if(!calData[cq].rows[ri].stores)calData[cq].rows[ri].stores=[];
+  if(calData[cq].rows[ri].stores.includes(v)){document.getElementById('er-search').value='';return;}
+  calData[cq].rows[ri].stores.push(v);
+  save();openEditRow(cq,ri);renderPrevTab(cq);
+}
+function removeStoreFromRow(cq,ri,s){
+  calData[cq].rows[ri].stores=calData[cq].rows[ri].stores.filter(x=>x!==s);
+  save();openEditRow(cq,ri);renderPrevTab(cq);
+}
+function filterErList(cq,ri){
+  const v=document.getElementById('er-search').value.trim().toUpperCase();
+  if(v.length>0&&!calData[cq].rows[ri].stores.includes(v)){
+    const match=TIENDAS[cq].find(t=>t===v);
+    if(match)addStoreToRow(cq,ri);
+  }
+}
+function toggleRevision(cq,ri,s){
+  if(!calData[cq].rows[ri].revision)calData[cq].rows[ri].revision=[];
+  const idx=calData[cq].rows[ri].revision.indexOf(s);
+  if(idx>-1)calData[cq].rows[ri].revision.splice(idx,1);
+  else calData[cq].rows[ri].revision.push(s);
+  save();renderPrevTab(cq);
+}
+function saveEditDate(cq,ri,val){
+  calData[cq].rows[ri].date=val;
+  calData[cq].rows.sort((a,b)=>a.date.localeCompare(b.date));
+  save();renderPrevTab(cq);closeMo('mo-edit-row');
+}
+
+// NUEVO MES
+function doNewMonth(){
+  const cq=document.getElementById('nm-cq').value;
+  const mk=document.getElementById('nm-mes').value;
+  const tpd=parseInt(document.getElementById('nm-tpd').value)||2;
+  if(!mk)return;
+  // guardar al historial
+  if(!prevHist[calData[cq]?.month])prevHist[calData[cq]?.month||mk]={};
+  if(calData[cq])prevHist[calData[cq].month][cq]=[...prevDone[cq]];
+  prevDone[cq]=[];
+  SS('pvh_'+cq,{});
+  // storePends se conserva intacto (pendientes por tienda persisten)
+  calData[cq]={month:mk,rows:buildCal(cq,mk,tpd)};
+  save();closeMo('mo-new-month');
+  document.querySelectorAll('#page-preventivos .tab').forEach(t=>{t.classList.toggle('active',t.textContent==={jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'}[cq]);});
+  document.querySelectorAll('#page-preventivos .tc').forEach(t=>{t.classList.toggle('active',t.id==='pv-'+cq);});
+  activeCq=cq;renderPrevTab(cq);
+}
+
+// HISTORIAL
+function renderHist(){
+  const el=document.getElementById('hist-ct');
+  const keys=Object.keys(prevHist).sort().reverse();
+  if(!keys.length){el.innerHTML='<div class="emp">Sin meses guardados</div>';return;}
+  const ms=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  el.innerHTML=keys.map(k=>{const[y,m]=k.split('-');return`<div style="margin-bottom:14px"><div style="font-weight:700;margin-bottom:7px;font-size:14px">${ms[+m]||'?'} ${y}</div>${Object.entries(prevHist[k]).map(([c,ts])=>`<div style="margin-bottom:4px"><span class="badge bb">${c.toUpperCase()}</span> <span class="txt-m">${(ts||[]).length} tiendas completadas</span></div>`).join('')}</div>`;}).join('');
+}
+
+// EDITAR TIENDAS
+function renderEditT(cq){
+  const el=document.getElementById('et-'+cq);if(!el)return;
+  const tiendas=TIENDAS[cq];
+  el.innerHTML=`<div class="txt-m" style="margin-bottom:8px"><strong>${tiendas.length}</strong> tiendas — el orden define el orden del calendario</div>
+  <div style="max-height:300px;overflow-y:auto;margin-bottom:10px">${tiendas.map((t,i)=>`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--bd)">
+    <span class="txt-m" style="font-family:var(--mo);width:22px;text-align:right">${i+1}</span>
+    <input class="fi" style="flex:1" value="${t}" onchange="updT('${cq}',${i},this.value)">
+    <button class="btn bsm" style="color:var(--rd)" onclick="delT('${cq}',${i})">✕</button>
+  </div>`).join('')}</div>
+  <div style="display:flex;gap:7px;align-items:end">
+    <input class="fi" id="nt-${cq}" placeholder="Nueva tienda… Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addT('${cq}')}">
+    <button class="btn bp2 bsm" onclick="addT('${cq}')">Agregar</button>
+  </div>`;
+}
+function updT(cq,i,v){TIENDAS[cq][i]=v.toUpperCase().trim();save();}
+function delT(cq,i){if(!confirm('¿Eliminar "'+TIENDAS[cq][i]+'"?'))return;TIENDAS[cq].splice(i,1);save();renderEditT(cq);}
+function addT(cq){const inp=document.getElementById('nt-'+cq);const v=inp.value.trim().toUpperCase();if(!v)return;TIENDAS[cq].push(v);save();inp.value='';renderEditT(cq);}
+
+// PENDIENTES TIENDA
+function openSP(tienda,cq){
+  activeSP=tienda;activeCq=cq;
+  document.getElementById('msp-title').textContent='📋 Pendientes — '+tienda;
+  renderSPContent(tienda);document.getElementById('sp-new').value='';
+  openMo('mo-store-pend');
+}
+function renderSPContent(t){
+  const pends=storePends[t]||[];
+  const el=document.getElementById('msp-content');
+  if(!pends.length){el.innerHTML='<div class="emp">Sin pendientes para esta tienda</div>';return;}
+  el.innerHTML=`<table class="dt"><thead><tr><th>Descripción</th><th>Prioridad</th><th>Estado</th><th>✕</th></tr></thead><tbody>${
+    pends.map((p,i)=>`<tr>
+      <td>${p.desc}</td>
+      <td><span class="badge ${p.prioridad==='Urgente'?'br':p.prioridad==='Alta'?'ba':'bb'}">${p.prioridad}</span></td>
+      <td><select class="fi" style="width:100px" onchange="updSP('${t}',${i},this.value)"><option value="abierto"${p.estado==='abierto'?' selected':''}>Abierto</option><option value="resuelto"${p.estado==='resuelto'?' selected':''}>Resuelto</option></select></td>
+      <td><button class="btn bsm" style="color:var(--rd)" onclick="delSP('${t}',${i})">✕</button></td>
+    </tr>`).join('')
+  }</tbody></table>`;
+}
+function addSP(){
+  const desc=document.getElementById('sp-new').value.trim();if(!desc)return;
+  if(!storePends[activeSP])storePends[activeSP]=[];
+  storePends[activeSP].push({desc,prioridad:document.getElementById('sp-pri').value,estado:'abierto',fecha:today()});
+  save();renderSPContent(activeSP);document.getElementById('sp-new').value='';renderPrevTab(activeCq);
+}
+function updSP(t,i,k,v){
+  // v here is actually the value from onchange, k is the value
+  if(storePends[t]&&storePends[t][i]){storePends[t][i]['estado']=k;save();renderSPContent(t);renderPrevTab(activeCq);}
+}
+// fix: updSP called with (t,i,value) from onchange
+function updSPVal(t,i,v){if(storePends[t]&&storePends[t][i]){storePends[t][i]['estado']=v;save();renderSPContent(t);renderPrevTab(activeCq);}}
+function delSP(t,i){storePends[t].splice(i,1);save();renderSPContent(t);renderPrevTab(activeCq);}
+
+// PENDIENTES
+function addPRow(){pendientes.unshift({id:Date.now(),tienda:'',desc:'',fecha:today(),estado:'abierto'});save();renderPend();}
+function renderPend(){
+  let data=pendientes;
+  if(pendFilt==='abierto') data=data.filter(p=>p.estado==='abierto');
+  else if(pendFilt==='resuelto') data=data.filter(p=>p.estado==='resuelto');
+  const tb=document.getElementById('ptbody');
+  tb.innerHTML=data.length?data.map(p=>`<tr>
+    <td style="width:120px"><input class="fi" value="${p.tienda||''}" onchange="updP(${p.id},'tienda',this.value)" placeholder="Tienda"></td>
+    <td><input class="fi" value="${p.desc||''}" onchange="updP(${p.id},'desc',this.value)" placeholder="Descripción..."></td>
+    <td style="width:130px"><input type="date" class="fi" value="${p.fecha||''}" onchange="updP(${p.id},'fecha',this.value)"></td>
+    <td style="width:110px"><select class="fi" onchange="updP(${p.id},'estado',this.value)"><option value="abierto"${p.estado==='abierto'?' selected':''}>Abierto</option><option value="resuelto"${p.estado==='resuelto'?' selected':''}>Resuelto</option></select></td>
+    <td style="width:40px"><button class="btn bsm" style="color:var(--rd)" onclick="delP(${p.id})">✕</button></td>
+  </tr>`).join(''):'<tr><td colspan="5" class="emp">Sin registros</td></tr>';
+  const abiertos=pendientes.filter(p=>p.estado==='abierto');
+  document.getElementById('print-fecha').textContent='Semana del '+new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('print-tbody').innerHTML=abiertos.map(p=>`<tr><td style="border:1px solid #ccc;padding:5px 8px"><strong>${p.tienda||'—'}</strong></td><td style="border:1px solid #ccc;padding:5px 8px">${p.desc||'—'}</td><td style="border:1px solid #ccc;padding:5px 8px">${fmt(p.fecha)}</td><td style="border:1px solid #ccc;padding:5px 8px">&nbsp;</td></tr>`).join('');
+  document.getElementById('bdg').textContent=pendientes.filter(p=>p.estado==='abierto').length;
+}
+function updP(id,k,v){const p=pendientes.find(x=>x.id===id);if(p){p[k]=v;save();}if(k==='estado')renderPend();}
+function delP(id){pendientes=pendientes.filter(x=>x.id!==id);save();renderPend();}
+function setF(f,el){pendFilt=f;document.querySelectorAll('#pfilt .btn').forEach(b=>b.classList.remove('active-f'));el.classList.add('active-f');renderPend();}
+
+// STOCK
+function renderStock(){renderStockTab('jose')}
+function renderStockTab(cq){
+  const gs=stockMat[cq];const el=document.getElementById('mt-'+cq);
+  el.innerHTML=`<div class="fb2" style="margin-bottom:12px"><div class="sh">${{jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'}[cq]||cq.toUpperCase()}</div><button class="btn bsm bp2" onclick="addSG('${cq}')">+ Nueva categoría</button></div>
+  ${gs.map((g,gi)=>`<div class="stk-grp"><div class="sg-hdr"><span class="sg-tit">${g.cat}</span><div class="fg2"><button class="btn bsm" onclick="renSG('${cq}',${gi})">✏</button><button class="btn bsm" style="color:var(--rd)" onclick="delSG('${cq}',${gi})">✕</button></div></div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="sk-row hdr"><span>Artículo</span><span style="text-align:right">Asignado</span><span style="text-align:right">Actual</span><span>Estado</span><span></span><span></span></div>
+    ${g.items.map((it,ii)=>{const pct=it.asig>0?Math.round(it.act/it.asig*100):100;const sc=pct>=80?'bg':pct>=50?'ba':'br';return`<div class="sk-row" draggable="true" ondragstart="dsrt(event,'${cq}',${gi},${ii})" ondragover="dov(event)" ondrop="ddrp(event,'${cq}',${gi},${ii})"><span class="fg2"><span class="dh">⠿</span>${it.n}</span><span><input class="si" type="number" value="${it.asig}" min="0" onchange="uSK('${cq}',${gi},${ii},'asig',this.value)"></span><span><input class="si" type="number" value="${it.act}" min="0" onchange="uSK('${cq}',${gi},${ii},'act',this.value)"></span><span><span class="badge ${sc}">${pct}%</span></span><span></span><span><button class="btn bsm" style="color:var(--rd)" onclick="dSK('${cq}',${gi},${ii})">✕</button></span></div>`}).join('')}
+    <div class="add-row"><input class="fi" id="ni-${cq}-${gi}" placeholder="Nuevo artículo… Enter" onkeydown="skE(event,'${cq}',${gi})"><input class="si" id="na-${cq}-${gi}" type="number" min="0" placeholder="Asig."><input class="si" id="nc-${cq}-${gi}" type="number" min="0" placeholder="Act."><button class="btn bsm bp2" onclick="aSK('${cq}',${gi})">+</button></div>
+  </div></div>`).join('')}`;
+}
+function skE(e,cq,gi){if(e.key==='Enter'){e.preventDefault();aSK(cq,gi);}}
+function aSK(cq,gi){const n=document.getElementById('ni-'+cq+'-'+gi).value.trim();if(!n)return;stockMat[cq][gi].items.push({n,asig:parseInt(document.getElementById('na-'+cq+'-'+gi).value)||0,act:parseInt(document.getElementById('nc-'+cq+'-'+gi).value)||0});save();renderStockTab(cq);}
+function uSK(cq,gi,ii,k,v){stockMat[cq][gi].items[ii][k]=parseInt(v)||0;save();renderStockTab(cq);}
+function dSK(cq,gi,ii){stockMat[cq][gi].items.splice(ii,1);save();renderStockTab(cq);}
+function addSG(cq){const n=prompt('Nombre:');if(n){stockMat[cq].push({cat:n,items:[]});save();renderStockTab(cq);}}
+function renSG(cq,gi){const n=prompt('Nuevo nombre:',stockMat[cq][gi].cat);if(n){stockMat[cq][gi].cat=n;save();renderStockTab(cq);}}
+function delSG(cq,gi){if(confirm('¿Eliminar "'+stockMat[cq][gi].cat+'"?')){stockMat[cq].splice(gi,1);save();renderStockTab(cq);}}
+function dsrt(e,cq,gi,ii){dragSrc={cq,gi,ii};e.dataTransfer.effectAllowed='move';}
+function dov(e){e.preventDefault();}
+function ddrp(e,cq,gi,ii){e.preventDefault();if(!dragSrc||dragSrc.gi!==gi||dragSrc.cq!==cq)return;const it=stockMat[cq][gi].items;const[mv]=it.splice(dragSrc.ii,1);it.splice(ii,0,mv);save();renderStockTab(cq);dragSrc=null;}
+
+// PROVEEDORES — con movimientos
+function renderProv(){renderProvTab('p1')}
+function renderProvTab(pid){
+  const names={p1:'Material General',p2:'Material PTRP',p3:'Plafón'};
+  const rows=provData[pid];const el=document.getElementById('pv2-'+pid);
+  el.innerHTML=`<div class="fb2" style="margin-bottom:12px"><div class="sh">${names[pid]}</div><span class="txt-m">${rows.length} artículos</span></div>
+  <div class="card" style="padding:10px 12px;margin-bottom:12px">
+    <div class="ct">Agregar artículo / entrada</div>
+    <div style="display:grid;grid-template-columns:1.5fr 80px 110px 120px 1fr auto;gap:7px;align-items:end">
+      <div><div class="fl">Artículo</div><input class="fi" id="${pid}-a" placeholder="Nombre..." onkeydown="pE(event,'${pid}')"></div>
+      <div><div class="fl">Cantidad</div><input type="number" class="fi" id="${pid}-c" min="1" value="1" onkeydown="pE(event,'${pid}')"></div>
+      <div><div class="fl">Fecha entrada</div><input type="date" class="fi" id="${pid}-f" value="${today()}" onkeydown="pE(event,'${pid}')"></div>
+      <div><div class="fl">Comprobante</div><input class="fi" id="${pid}-cp" placeholder="Folio..." onkeydown="pE(event,'${pid}')"></div>
+      <div><div class="fl">Notas</div><input class="fi" id="${pid}-n" placeholder="Opcional" onkeydown="pE(event,'${pid}')"></div>
+      <button class="btn bp2" onclick="addProv('${pid}')" style="align-self:end">+</button>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="dt">
+      <thead><tr><th>Artículo</th><th>Stock actual</th><th>Entrada orig.</th><th>Comprobante</th><th>Acciones</th></tr></thead>
+      <tbody>${rows.length?rows.map((r,i)=>{
+        const movs=r.movs||[];
+        const used=movs.reduce((a,b)=>a+parseInt(b.cant||0),0);
+        const actual=parseInt(r.cant||0)-used;
+        const movRows=movs.map((mv,mi)=>`<tr class="mov-row"><td colspan="2" style="padding-left:24px">↳ ${mv.notas||'Uso'} — ${fmt(mv.fecha)}</td><td style="color:var(--rd);font-family:var(--mo)">−${mv.cant}</td><td>${mv.comp||'—'}</td><td><button class="btn bsm" style="color:var(--rd)" onclick="delMov('${pid}',${i},${mi})">✕</button></td></tr>`).join('');
+        return`<tr>
+          <td><strong>${r.art}</strong></td>
+          <td style="font-family:var(--mo);color:${actual<1?'var(--rd)':actual<(r.cant/2)?'var(--am)':'var(--gn)'}">${actual} / ${r.cant}</td>
+          <td>${fmt(r.fecha)}</td>
+          <td>${r.comp||'—'}</td>
+          <td><button class="btn bsm" onclick="openProvMov('${pid}',${i})" title="Registrar uso">− Usar</button> <button class="btn bsm" style="color:var(--rd)" onclick="delProv('${pid}',${i})">✕</button></td>
+        </tr>${movRows}`;
+      }).join(''):'<tr><td colspan="5" class="emp">Sin artículos</td></tr>'}</tbody>
+    </table>
+  </div>`;
+}
+function pE(e,pid){if(e.key==='Enter'){e.preventDefault();addProv(pid);}}
+function addProv(pid){const a=document.getElementById(pid+'-a').value.trim();if(!a)return;provData[pid].unshift({art:a,cant:document.getElementById(pid+'-c').value,fecha:document.getElementById(pid+'-f').value,comp:document.getElementById(pid+'-cp').value,notas:document.getElementById(pid+'-n').value,movs:[]});save();renderProvTab(pid);}
+function delProv(pid,i){if(!confirm('¿Eliminar?'))return;provData[pid].splice(i,1);save();renderProvTab(pid);}
+function openProvMov(pid,i){
+  provMovItem={pid,i};
+  const r=provData[pid][i];
+  const movs=r.movs||[];
+  const used=movs.reduce((a,b)=>a+parseInt(b.cant||0),0);
+  const actual=parseInt(r.cant||0)-used;
+  document.getElementById('pmov-title').textContent='− Usar: '+r.art+' (disponible: '+actual+')';
+  document.getElementById('pmov-content').innerHTML=`
+    <div class="fr" style="margin-bottom:10px">
+      <div class="fg"><label class="fl">Cantidad a usar</label><input type="number" class="fi" id="pmov-cant" min="1" max="${actual}" value="1"></div>
+      <div class="fg"><label class="fl">Fecha</label><input type="date" class="fi" id="pmov-fecha" value="${today()}"></div>
+    </div>
+    <div class="fr" style="margin-bottom:10px">
+      <div class="fg"><label class="fl">Comprobante</label><input class="fi" id="pmov-comp" placeholder="Folio / opcional"></div>
+      <div class="fg"><label class="fl">Notas</label><input class="fi" id="pmov-notas" placeholder="¿Dónde se usó?"></div>
+    </div>
+    <div class="fbb"><button class="btn" onclick="closeMo('mo-prov-mov')">Cancelar</button><button class="btn bp2" onclick="saveMov()">Registrar uso</button></div>`;
+  openMo('mo-prov-mov');
+}
+function saveMov(){
+  const{pid,i}=provMovItem;
+  const cant=parseInt(document.getElementById('pmov-cant').value)||0;
+  if(!cant)return;
+  if(!provData[pid][i].movs)provData[pid][i].movs=[];
+  provData[pid][i].movs.push({cant,fecha:document.getElementById('pmov-fecha').value,comp:document.getElementById('pmov-comp').value,notas:document.getElementById('pmov-notas').value});
+  save();closeMo('mo-prov-mov');renderProvTab(pid);
+}
+function delMov(pid,i,mi){provData[pid][i].movs.splice(mi,1);save();renderProvTab(pid);}
+
+// PINTURA — cuadrillas primero
+function renderPint(){renderPintCq('jose');}
+function renderPintCq(cq){
+  const el=document.getElementById('cq-'+cq);if(!el)return;
+  // sub-tabs
+  const active=el.dataset.pintab||'stk';
+  el.innerHTML=`
+    <div class="tabs" id="pt-tabs-${cq}" style="margin-bottom:14px">
+      <div class="tab${active==='stk'?' active':''}" onclick="pintSubTab('${cq}','stk',this)">Stock inicial</div>
+      <div class="tab${active==='cmp'?' active':''}" onclick="pintSubTab('${cq}','cmp',this)">Comprobantes</div>
+      <div class="tab${active==='cie'?' active':''}" onclick="pintSubTab('${cq}','cie',this)">Cierre de mes</div>
+    </div>
+    <div id="pts-${cq}"></div>`;
+  renderPintSub(cq,active);
+}
+function pintSubTab(cq,sub,el){
+  document.getElementById('cq-'+cq).dataset.pintab=sub;
+  document.querySelectorAll(`#pt-tabs-${cq} .tab`).forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderPintSub(cq,sub);
+}
+function renderPintSub(cq,sub){
+  const el=document.getElementById('pts-'+cq);if(!el)return;
+  if(sub==='stk'){
+    el.innerHTML=`
+      <div class="fb2" style="margin-bottom:10px"><div class="sh" style="font-size:14px">Stock inicial — ${{jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'}[cq]||cq.toUpperCase()}</div></div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.5fr 100px 50px;padding:5px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);border-bottom:1px solid var(--bd)"><span>Tipo de pintura</span><span style="text-align:right">Litros (L)</span><span></span></div>
+        ${(pintStock[cq]||[]).map((p,i)=>`<div style="display:grid;grid-template-columns:1.5fr 100px 50px;align-items:center;padding:5px 8px;border-bottom:1px solid var(--bd)">
+          <span>${p.tipo}</span>
+          <span><input class="si" type="number" value="${p.litros}" min="0" step="0.1" style="width:90px" onchange="uPS('${cq}',${i},this.value)"></span>
+          <span><button class="btn bsm" style="color:var(--rd)" onclick="dPS('${cq}',${i})">✕</button></span>
+        </div>`).join('')}
+        <div style="display:grid;grid-template-columns:1.5fr 100px auto;gap:5px;padding:6px 8px;border-top:1px solid var(--bd);align-items:end">
+          <input class="fi" id="ps-t-${cq}" placeholder="Tipo… Enter" onkeydown="psE(event,'${cq}')">
+          <input type="number" class="si" id="ps-l-${cq}" min="0" step="0.1" placeholder="L" style="width:90px" onkeydown="if(event.key==='Enter')sPS('${cq}')">
+          <button class="btn bsm bp2" onclick="sPS('${cq}')">+</button>
+        </div>
+      </div>`;
+  } else if(sub==='cmp'){
+    const rows=pintComp[cq]||[];
+    const tipos=(pintStock[cq]||[]).map(p=>p.tipo);
+    el.innerHTML=`
+      <div class="card" style="padding:10px 12px;margin-bottom:12px">
+        <div class="ct">Nuevo comprobante — ${{jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'}[cq]||cq.toUpperCase()}</div>
+        <div style="display:grid;grid-template-columns:1.5fr 80px 130px 110px 1fr auto;gap:7px;align-items:end">
+          <div><div class="fl">Tipo</div><select class="fi" id="pc-t-${cq}">${tipos.map(t=>`<option>${t}</option>`).join('')||'<option>Sin tipos</option>'}</select></div>
+          <div><div class="fl">Litros</div><input type="number" class="fi" id="pc-l-${cq}" min="0" step="0.1" placeholder="0.0" onkeydown="pcE(event,'${cq}',1)"></div>
+          <div><div class="fl">Comprobante</div><input class="fi" id="pc-c-${cq}" placeholder="Folio..." onkeydown="pcE(event,'${cq}',2)"></div>
+          <div><div class="fl">Fecha</div><input type="date" class="fi" id="pc-f-${cq}" value="${today()}" onkeydown="pcE(event,'${cq}',3)"></div>
+          <div><div class="fl">Notas</div><input class="fi" id="pc-n-${cq}" placeholder="Opcional" onkeydown="pcE(event,'${cq}',4)"></div>
+          <button class="btn bp2" onclick="sPintComp('${cq}')" style="align-self:end">+</button>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="dt"><thead><tr><th>Tipo</th><th>Litros</th><th>Comprobante</th><th>Fecha</th><th>Notas</th></tr></thead>
+        <tbody>${rows.length?rows.map(c=>`<tr><td>${c.tipo}</td><td style="font-family:var(--mo)">${c.litros}L</td><td>${c.comp||'—'}</td><td>${fmt(c.fecha)}</td><td>${c.notas||'—'}</td></tr>`).join(''):'<tr><td colspan="5" class="emp">Sin comprobantes</td></tr>'}</tbody>
+        </table>
+      </div>`;
+  } else {
+    const stk=pintStock[cq]||[];
+    const rows=pintComp[cq]||[];
+    // agrupar comprobantes por mes
+    const byM={};rows.forEach(c=>{const mk=getMonthKey2(c.fecha);if(!byM[mk])byM[mk]={};if(!byM[mk][c.tipo])byM[mk][c.tipo]=0;byM[mk][c.tipo]+=parseFloat(c.litros||0);});
+    const ms2b=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const months=Object.keys(byM).sort().reverse();
+    el.innerHTML=`
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+      <table class="dt"><thead><tr><th>Tipo</th><th>Stock inicial</th><th>Total comprobado</th><th>Diferencia</th><th>Estado</th></tr></thead>
+      <tbody>${stk.length?stk.map(p=>{
+        const comp=(pintComp[cq]||[]).filter(c=>c.tipo===p.tipo).reduce((a,b)=>a+parseFloat(b.litros||0),0);
+        const diff=parseFloat(p.litros)-comp;
+        const clr=diff>0?'var(--am)':diff<0?'var(--rd)':'var(--gn)';
+        const lbl=diff>0?`<span class="badge ba">Faltante ${diff.toFixed(1)}L</span>`:diff<0?`<span class="badge br">Exceso ${Math.abs(diff).toFixed(1)}L</span>`:`<span class="badge bg">Cuadra ✓</span>`;
+        return`<tr><td>${p.tipo}</td><td style="font-family:var(--mo)">${parseFloat(p.litros).toFixed(1)}L</td><td style="font-family:var(--mo)">${comp.toFixed(1)}L</td><td style="font-family:var(--mo);color:${clr}">${diff>0?'−':diff<0?'+':''}${Math.abs(diff).toFixed(1)}L</td><td>${lbl}</td></tr>`;
+      }).join(''):'<tr><td colspan="5" class="emp">Registra stock primero</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="ct" style="margin-bottom:8px">Comprobantes por mes</div>
+    ${months.length?months.map(mk=>{
+      const[y,m]=mk.split('-');
+      const mLbl=(ms2b[+m]||'?')+' '+y;
+      const tiposM=Object.keys(byM[mk]);
+      return`<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px">
+        <div style="padding:6px 12px;background:var(--bg);font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--bd)">${mLbl}</div>
+        <table class="dt"><thead><tr><th>Tipo</th><th>Litros comprobados</th><th>Pendiente vs stock</th></tr></thead>
+        <tbody>${tiposM.map(tipo=>{
+          const comp=byM[mk][tipo];
+          const stockLit=stk.find(p=>p.tipo===tipo)?.litros||0;
+          const diff=parseFloat(stockLit)-comp;
+          const lbl=diff>0?`<span class="badge ba">Falta ${diff.toFixed(1)}L</span>`:diff<0?`<span class="badge br">Exceso ${Math.abs(diff).toFixed(1)}L</span>`:`<span class="badge bg">OK ✓</span>`;
+          return`<tr><td>${tipo}</td><td style="font-family:var(--mo)">${comp.toFixed(1)}L</td><td>${lbl}</td></tr>`;
+        }).join('')}</tbody></table>
+      </div>`;
+    }).join(''):'<div class="emp">Sin comprobantes registrados</div>'}`;
+  }
+}
+function psE(e,cq){if(e.key==='Enter'){e.preventDefault();document.getElementById('ps-l-'+cq).focus();}}
+function sPS(cq){
+  const t=document.getElementById('ps-t-'+cq).value.trim();const l=parseFloat(document.getElementById('ps-l-'+cq).value)||0;
+  if(!t)return;if(!pintStock[cq])pintStock[cq]=[];
+  const ex=pintStock[cq].find(p=>p.tipo===t);if(ex)ex.litros=l;else pintStock[cq].push({tipo:t,litros:l});
+  save();document.getElementById('ps-t-'+cq).value='';document.getElementById('ps-l-'+cq).value='';renderPintSub(cq,'stk');
+}
+function uPS(cq,i,v){pintStock[cq][i].litros=parseFloat(v)||0;save();}
+function dPS(cq,i){pintStock[cq].splice(i,1);save();renderPintSub(cq,'stk');}
+function pcE(e,cq,step){if(e.key!=='Enter')return;e.preventDefault();const ids=[`pc-l-${cq}`,`pc-c-${cq}`,`pc-f-${cq}`,`pc-n-${cq}`];if(step<=ids.length-1)document.getElementById(ids[step]).focus();else sPintComp(cq);}
+function sPintComp(cq){
+  const tipo=document.getElementById('pc-t-'+cq)?.value;const litros=parseFloat(document.getElementById('pc-l-'+cq)?.value)||0;
+  if(!tipo||!litros)return;if(!pintComp[cq])pintComp[cq]=[];
+  pintComp[cq].unshift({tipo,litros,comp:document.getElementById('pc-c-'+cq).value,fecha:document.getElementById('pc-f-'+cq).value,notas:document.getElementById('pc-n-'+cq).value});
+  save();renderPintSub(cq,'cmp');
+}
+
+// GASOLINA — datos
+const VEHS=['Cuadrilla ALFREDO','Cuadrilla CHAN','Cuadrilla ESDRAS','Auto propio','Auto correctivos'];
+const VCO={'Cuadrilla ALFREDO':'var(--ac)','Cuadrilla CHAN':'var(--gn)','Cuadrilla ESDRAS':'var(--pu)','Auto propio':'var(--am)','Auto correctivos':'var(--tl)'};
+
+// GASOLINA — meses
+let _gasMes=null; // null = mes actual
+function renderGas(){
+  // construir tabs de meses
+  const mesList=Object.keys(gasHist||{}).sort().reverse();
+  const ms2=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const mLbl=mk=>{if(!mk)return'—';const[y,m]=mk.split('-');return(ms2[+m]||'?')+' '+y;};
+  document.getElementById('gas-mes-tabs').innerHTML=
+    `<button class="btn bsm${!_gasMes?' active-f':''}" onclick="_gasMes=null;renderGas()">📌 Mes actual</button>`
+    +mesList.map(mk=>`<button class="btn bsm${_gasMes===mk?' active-f':''}" onclick="_gasMes='${mk}';renderGas()">${mLbl(mk)}</button>`).join('');
+  const data=_gasMes?(gasHist[_gasMes]||[]):gasData;
+  document.getElementById('gas-btns').innerHTML=VEHS.map(v=>{
+    const r=data.filter(g=>g.vehiculo===v);
+    const tm=r.reduce((a,b)=>a+parseFloat(b.monto||0),0);
+    const tl=r.reduce((a,b)=>a+parseFloat(b.litros||0),0);
+    return`<div class="gas-btn" onclick="${_gasMes?'':` openGasQ('${v}')`}"><div class="gas-ico">⛽</div><div class="gas-lbl" style="color:${VCO[v]||'var(--ac)'}">${v}</div><div class="gas-tot">$${tm.toFixed(0)}</div><div class="gas-sub">${tl.toFixed(1)}L · ${r.length} cargas</div></div>`;
+  }).join('');
+  const byMonth={};data.forEach(g=>{const mk=getMonthKey2(g.fecha);if(!byMonth[mk])byMonth[mk]=[];byMonth[mk].push(g);});
+  const months=Object.keys(byMonth).sort().reverse();
+  document.getElementById('gas-tbody').innerHTML=months.length?months.map(mk=>{
+    const rows=byMonth[mk];
+    const mTotal=rows.reduce((a,b)=>a+parseFloat(b.monto||0),0);
+    const label=mLbl(mk);
+    return`<tr style="background:var(--bg)"><td colspan="7" style="padding:6px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)">${label} <span style="font-family:var(--mo);color:var(--ac)">$${mTotal.toFixed(0)}</span></td></tr>`
+      +rows.map(g=>{const i=gasData.indexOf(g);return`<tr><td><strong>${g.vehiculo}</strong></td><td style="font-family:var(--mo)">$${parseFloat(g.monto||0).toFixed(2)}</td><td style="font-family:var(--mo)">${parseFloat(g.litros||0).toFixed(1)}L</td><td>${dayN(g.fecha)}</td><td>${fmt(g.fecha)}</td><td>${g.notas||'—'}</td><td>${_gasMes?'':'<button class="btn bsm" style="color:var(--rd)" onclick="delGas('+i+')">✕</button>'}</td></tr>`;}).join('');
+  }).join(''):'<tr><td colspan="7" class="emp">Sin registros</td></tr>';
+}
+function doGasNewMes(){
+  const mk=document.getElementById('gas-nm-mes').value;if(!mk)return;
+  if(!gasHist)gasHist={};
+  gasHist[gasMesActual||getMonthKey2(gasData[0]?.fecha||today())]=[...gasData];
+  gasMesActual=mk;gasData=[];
+  save();closeMo('mo-gas-newmes');_gasMes=null;renderGas();
+}
+function openGasQ(v){
+  gasVeh=v;document.getElementById('mg-title').textContent='⛽ '+v;
+  ['mg-monto','mg-litros','mg-notas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mg-fecha').value=today();
+  openMo('mo-gas-q');setTimeout(()=>document.getElementById('mg-monto').focus(),100);
+}
+function saveGas(){
+  gasData.unshift({vehiculo:gasVeh,monto:parseFloat(document.getElementById('mg-monto').value)||0,litros:parseFloat(document.getElementById('mg-litros').value)||0,fecha:document.getElementById('mg-fecha').value,notas:document.getElementById('mg-notas').value});
+  save();closeMo('mo-gas-q');renderGas();
+}
+function delGas(i){gasData.splice(i,1);save();renderGas();}
+
+// GASTOS — meses
+let _gtMes=null;
+function getMonthKey2(fecha){if(!fecha)return'Sin fecha';const[y,m]=fecha.split('-');return y+'-'+m;}
+function renderGastos(){
+  const ms2=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const mLbl=mk=>{if(!mk||mk==='Sin fecha')return mk||'—';const[y,m]=mk.split('-');return(ms2[+m]||'?')+' '+y;};
+  const mesList=Object.keys(gtHist||{}).sort().reverse();
+  document.getElementById('gt-mes-tabs').innerHTML=
+    `<button class="btn bsm${!_gtMes?' active-f':''}" onclick="_gtMes=null;renderGastos()">📌 Mes actual</button>`
+    +mesList.map(mk=>`<button class="btn bsm${_gtMes===mk?' active-f':''}" onclick="_gtMes='${mk}';renderGastos()">${mLbl(mk)}</button>`).join('');
+  const data=_gtMes?(gtHist[_gtMes]||[]):gastoData;
+  const total=data.reduce((a,b)=>a+parseFloat(b.monto||0),0);
+  const max=data.length?Math.max(...data.map(g=>parseFloat(g.monto||0))):0;
+  document.getElementById('gt-total').textContent='$'+total.toFixed(0);
+  document.getElementById('gt-max').textContent='$'+max.toFixed(0);
+  document.getElementById('gt-cnt').textContent=data.length;
+  const byMonth={};data.forEach(g=>{const mk=getMonthKey2(g.fecha);if(!byMonth[mk])byMonth[mk]=[];byMonth[mk].push(g);});
+  const months=Object.keys(byMonth).sort().reverse();
+  document.getElementById('gt-tbody').innerHTML=months.length?months.map(mk=>{
+    const rows=byMonth[mk];
+    const mTotal=rows.reduce((a,b)=>a+parseFloat(b.monto||0),0);
+    return`<tr style="background:var(--bg)"><td colspan="6" style="padding:6px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)">${mLbl(mk)} <span style="font-family:var(--mo);color:var(--ac)">$${mTotal.toFixed(0)}</span></td></tr>`
+      +rows.map(g=>{const i=gastoData.indexOf(g);return`<tr><td>${g.concepto}</td><td style="font-family:var(--mo)">$${parseFloat(g.monto||0).toFixed(2)}</td><td><span class="badge bb">${g.cat}</span></td><td>${fmt(g.fecha)}</td><td>${g.notas||'—'}</td><td>${_gtMes?'':'<button class="btn bsm" style="color:var(--rd)" onclick="delGasto('+i+')">✕</button>'}</td></tr>`;}).join('');
+  }).join(''):'<tr><td colspan="6" class="emp">Sin gastos</td></tr>';
+}
+function doGastoNewMes(){
+  const mk=document.getElementById('gt-nm-mes').value;if(!mk)return;
+  if(!gtHist)gtHist={};
+  gtHist[gtMesActual||getMonthKey2(gastoData[0]?.fecha||today())]=[...gastoData];
+  gtMesActual=mk;gastoData=[];
+  save();closeMo('mo-gasto-newmes');_gtMes=null;renderGastos();
+}
+function saveGasto(){const c=document.getElementById('gt-c').value.trim();if(!c)return;gastoData.unshift({concepto:c,monto:parseFloat(document.getElementById('gt-m').value)||0,cat:document.getElementById('gt-k').value,fecha:document.getElementById('gt-f').value,notas:document.getElementById('gt-n').value});save();closeMo('mo-gasto');renderGastos();}
+function delGasto(i){gastoData.splice(i,1);save();renderGastos();}
+
+// ===== MATERIAL ELÉCTRICO =====
+let _elecCq='jose';
+function renderElec(){stabElec('jose',document.querySelector('#page-electrico .tab'));}
+function stabElec(cq,el){
+  _elecCq=cq;
+  document.querySelectorAll('#page-electrico .tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  renderElecTab(cq);
+}
+function renderElecTab(cq){
+  const items=elecData[cq]||[];
+  const cqLbl={jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS',general:'General'};
+  const total=items.length;
+  const totalUnits=items.reduce((a,b)=>a+parseInt(b.cant||0),0);
+  const usado=items.reduce((a,b)=>a+(b.usos||[]).reduce((x,u)=>x+parseInt(u.cant||0),0),0);
+  const el=document.getElementById('elec-content');
+  el.innerHTML=`
+    <div class="sg" style="margin-bottom:14px">
+      <div class="sc acc"><div class="sl">Artículos</div><div class="sv">${total}</div></div>
+      <div class="sc grn"><div class="sl">Stock total</div><div class="sv">${totalUnits-usado}</div><div class="ss">disponible</div></div>
+      <div class="sc amb"><div class="sl">Usado</div><div class="sv">${usado}</div></div>
+    </div>
+    <div class="card" style="padding:10px 12px;margin-bottom:12px">
+      <div class="ct">Agregar artículo — ${cqLbl[cq]}</div>
+      <div style="display:grid;grid-template-columns:1.5fr 80px 80px 110px 1fr auto;gap:7px;align-items:end">
+        <div><div class="fl">Artículo</div><input class="fi" id="elec-inline-art" placeholder="Nombre..." onkeydown="if(event.key==='Enter')saveElecInline('${cq}')"></div>
+        <div><div class="fl">Cant.</div><input type="number" class="fi" id="elec-inline-cant" min="0" value="1"></div>
+        <div><div class="fl">Unidad</div><select class="fi" id="elec-inline-unit"><option>pza</option><option>m</option><option>rollo</option><option>caja</option><option>par</option><option>kg</option></select></div>
+        <div><div class="fl">Fecha</div><input type="date" class="fi" id="elec-inline-fecha" value="${today()}"></div>
+        <div><div class="fl">Notas</div><input class="fi" id="elec-inline-notas" placeholder="Opcional"></div>
+        <button class="btn bp2" onclick="saveElecInline('${cq}')" style="align-self:end">+</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="dt">
+        <thead><tr><th>Artículo</th><th>Disponible</th><th>Entrada</th><th>Fecha</th><th>Notas</th><th>Acciones</th></tr></thead>
+        <tbody>${items.length?items.map((it,i)=>{
+          const usadoArt=(it.usos||[]).reduce((a,b)=>a+parseInt(b.cant||0),0);
+          const disp=parseInt(it.cant||0)-usadoArt;
+          const clr=disp<=0?'var(--rd)':disp<(it.cant/3)?'var(--am)':'var(--gn)';
+          const usoRows=(it.usos||[]).map((u,ui)=>`<tr class="mov-row"><td colspan="2" style="padding-left:24px">↳ ${u.notas||'Uso'} — ${fmt(u.fecha)}</td><td style="color:var(--rd);font-family:var(--mo)">−${u.cant} ${it.unit||''}</td><td colspan="3"><button class="btn bsm" style="color:var(--rd)" onclick="delElecUso('${cq}',${i},${ui})">✕</button></td></tr>`).join('');
+          return`<tr>
+            <td><strong>${it.art}</strong></td>
+            <td style="font-family:var(--mo);color:${clr}">${disp} / ${it.cant} ${it.unit||''}</td>
+            <td style="font-family:var(--mo)">${parseInt(it.cant||0)} ${it.unit||''}</td>
+            <td>${fmt(it.fecha)}</td>
+            <td>${it.notas||'—'}</td>
+            <td><button class="btn bsm" onclick="openElecUse('${cq}',${i})">− Usar</button> <button class="btn bsm" style="color:var(--rd)" onclick="delElec('${cq}',${i})">✕</button></td>
+          </tr>${usoRows}`;
+        }).join(''):'<tr><td colspan="6" class="emp">Sin artículos registrados</td></tr>'}</tbody>
+      </table>
+    </div>`;
+}
+function saveElecInline(cq){
+  const art=document.getElementById('elec-inline-art').value.trim();if(!art)return;
+  if(!elecData[cq])elecData[cq]=[];
+  elecData[cq].unshift({art,cant:parseInt(document.getElementById('elec-inline-cant').value)||1,unit:document.getElementById('elec-inline-unit').value,fecha:document.getElementById('elec-inline-fecha').value,notas:document.getElementById('elec-inline-notas').value,usos:[]});
+  save();renderElecTab(cq);
+}
+function openElecUse(cq,i){
+  elecUseTarget={cq,i};
+  const it=elecData[cq][i];
+  const usadoArt=(it.usos||[]).reduce((a,b)=>a+parseInt(b.cant||0),0);
+  document.getElementById('elecuse-title').textContent='− Usar: '+it.art+' (disponible: '+(it.cant-usadoArt)+' '+it.unit+')';
+  document.getElementById('elecuse-cant').value=1;
+  document.getElementById('elecuse-fecha').value=today();
+  document.getElementById('elecuse-notas').value='';
+  openMo('mo-elec-use');
+}
+function doElecUse(){
+  if(!elecUseTarget)return;
+  const{cq,i}=elecUseTarget;
+  const cant=parseInt(document.getElementById('elecuse-cant').value)||0;if(!cant)return;
+  if(!elecData[cq][i].usos)elecData[cq][i].usos=[];
+  elecData[cq][i].usos.push({cant,fecha:document.getElementById('elecuse-fecha').value,notas:document.getElementById('elecuse-notas').value});
+  save();closeMo('mo-elec-use');renderElecTab(cq);
+}
+function delElecUso(cq,i,ui){elecData[cq][i].usos.splice(ui,1);save();renderElecTab(cq);}
+function delElec(cq,i){if(!confirm('¿Eliminar este artículo?'))return;elecData[cq].splice(i,1);save();renderElecTab(cq);}
+function saveElec(){
+  const cq=document.getElementById('elec-cq').value;
+  const art=document.getElementById('elec-art').value.trim();if(!art)return;
+  if(!elecData[cq])elecData[cq]=[];
+  elecData[cq].unshift({art,cant:parseInt(document.getElementById('elec-cant').value)||1,unit:document.getElementById('elec-unit').value,fecha:document.getElementById('elec-fecha').value||today(),notas:document.getElementById('elec-notas').value,usos:[]});
+  save();closeMo('mo-elec-add');renderElecTab(cq);
+}
+
+// ===== PENDIENTES POR TIENDA =====
+let _tpCq='jose';
+let _tpStore=null;
+const CQ_LABEL={jose:'ALFREDO',juan:'CHAN',esdras:'ESDRAS'};
+
+function renderTP(){
+  stabTP('jose',document.querySelector('#page-tiendapends .tab'));
+}
+function stabTP(cq,el){
+  _tpCq=cq;
+  document.querySelectorAll('#page-tiendapends .tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  renderTPTab(cq);
+}
+function renderTPTab(cq){
+  const tiendas=TIENDAS[cq]||[];
+  const el=document.getElementById('tp-content');
+  el.innerHTML=`
+    <div style="margin-bottom:10px">
+      <input class="fi" placeholder="🔍 Buscar tienda..." oninput="filterTPBtns(this.value,'${cq}')" id="tp-search-${cq}" style="max-width:320px">
+    </div>
+    <div id="tp-btns-${cq}" style="display:flex;flex-wrap:wrap;gap:8px">
+      ${tiendas.map(t=>{
+        const pends=(storePends[t]||[]);
+        const open=pends.filter(p=>p.estado==='abierto').length;
+        return`<div class="tp-btn" id="tpb-${cq}-${t.replace(/\s/g,'_')}" onclick="openTP('${cq}','${t.replace(/'/g,"\\'")}')">
+          <div class="tp-btn-name">${t}</div>
+          ${open?`<div class="tp-btn-badge">${open}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+function filterTPBtns(q,cq){
+  const btns=document.querySelectorAll(`#tp-btns-${cq} .tp-btn`);
+  btns.forEach(b=>{
+    const name=b.querySelector('.tp-btn-name').textContent.toUpperCase();
+    b.style.display=name.includes(q.toUpperCase())?'':'none';
+  });
+}
+function openTP(cq,store){
+  _tpCq=cq;_tpStore=store;
+  document.getElementById('mo-tp-title').textContent=`📋 ${store} — ${CQ_LABEL[cq]}`;
+  document.getElementById('mo-tp-input').value='';
+  renderTPList();
+  openMo('mo-tp');
+  setTimeout(()=>document.getElementById('mo-tp-input').focus(),120);
+}
+function renderTPList(){
+  const items=storePends[_tpStore]||[];
+  const open=items.filter(p=>p.estado==='abierto');
+  const done=items.filter(p=>p.estado==='resuelto');
+  const renderItem=(p,i,isDone)=>`
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:7px 4px;border-bottom:1px solid var(--bd);${isDone?'opacity:.55':''}">
+      <div onclick="toggleTPItem('${_tpStore}',${i})" style="width:18px;height:18px;border-radius:4px;border:2px solid ${isDone?'var(--gn)':'var(--bd)'};background:${isDone?'var(--gn)':'transparent'};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-top:1px">
+        ${isDone?'<span style="color:#fff;font-size:10px">✓</span>':''}
+      </div>
+      <div style="flex:1">
+        <div contenteditable="true" style="font-size:13px;${isDone?'text-decoration:line-through;color:var(--mu)':''};outline:none;min-height:18px" 
+          onblur="editTPItem('${_tpStore}',${i},this.textContent)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">${p.texto}</div>
+        ${p.fecha?`<div style="font-size:11px;color:var(--mu);margin-top:2px">${fmt(p.fecha)}</div>`:''}
+      </div>
+      <button onclick="delTPItem('${_tpStore}',${i})" style="background:none;border:none;color:var(--mu);cursor:pointer;font-size:14px;padding:0 2px">✕</button>
+    </div>`;
+  document.getElementById('mo-tp-list').innerHTML=
+    (open.length?open.map((p,i)=>renderItem(p,items.indexOf(p),false)).join(''):'<div style="color:var(--mu);font-size:12px;padding:8px 4px">Sin pendientes abiertos ✓</div>')
+    +(done.length?`<div style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;padding:10px 4px 4px">Resueltos</div>`+done.map((p,i)=>renderItem(p,items.indexOf(p),true)).join(''):'');
+}
+function tpInputKey(e){
+  if(e.key==='Enter'){e.preventDefault();tpAddItem();}
+  else if(e.key==='Tab'){e.preventDefault();document.getElementById('mo-tp-save').focus();}
+}
+function tpAddItem(){
+  const v=document.getElementById('mo-tp-input').value.trim();if(!v)return;
+  if(!storePends[_tpStore])storePends[_tpStore]=[];
+  storePends[_tpStore].unshift({texto:v,estado:'abierto',fecha:today()});
+  save();renderTPList();renderTPTab(_tpCq);renderPrevTab(_tpCq);
+  document.getElementById('mo-tp-input').value='';
+  document.getElementById('mo-tp-input').focus();
+}
+function toggleTPItem(store,i){
+  const p=storePends[store][i];
+  p.estado=p.estado==='abierto'?'resuelto':'abierto';
+  save();renderTPList();renderTPTab(_tpCq);renderPrevTab(_tpCq);
+}
+function editTPItem(store,i,txt){
+  const v=txt.trim();if(!v)return;
+  storePends[store][i].texto=v;
+  save();
+}
+function delTPItem(store,i){
+  storePends[store].splice(i,1);
+  save();renderTPList();renderTPTab(_tpCq);renderPrevTab(_tpCq);
+}
+
+// Abrir pendientes desde el calendario
+function openTPFromCal(cq,store){
+  nav('tiendapends');
+  setTimeout(()=>{
+    stabTP(cq,document.querySelector('#page-tiendapends .tab[onclick*="'+cq+'"]'));
+    openTP(cq,store);
+  },80);
+}
+
+// ===== FOLIOS =====
+let foliosData = LS('fol5') || [];
+let folioActivo = null;
+let timerInterval = null;
+
+const FOLIO_HORAS = {ALTA:6, MEDIA:72, BAJA:720}; // 30 días = 720h
+
+function saveFolios(){SS('fol5',foliosData);updateFolioBadge();}
+
+function openMoFolio(){
+  // fill tiendas datalist
+  const all=[...TIENDAS.jose,...TIENDAS.juan,...TIENDAS.esdras].sort();
+  document.getElementById('fl-tiendas-list').innerHTML=all.map(t=>`<option value="${t}">`).join('');
+  // default datetime to now
+  const now=new Date();
+  now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+  document.getElementById('fl-fecha').value=now.toISOString().slice(0,16);
+  ['fl-num','fl-desc','fl-rep'].forEach(id=>document.getElementById(id).value='');
+  openMo('mo-add-folio');
+}
+
+function saveFolio(){
+  const num=document.getElementById('fl-num').value.trim();
+  const pri=document.getElementById('fl-pri').value;
+  const tienda=document.getElementById('fl-tienda').value.trim();
+  const desc=document.getElementById('fl-desc').value.trim();
+  const fecha=document.getElementById('fl-fecha').value;
+  const rep=document.getElementById('fl-rep').value.trim();
+  if(!num||!tienda||!desc||!fecha){alert('Completa folio, tienda, descripción y fecha.');return;}
+  foliosData.unshift({id:Date.now(),num,pri,tienda,desc,fecha,rep,estado:'abierto',sol:'',tec:'',fechaCierre:''});
+  saveFolios();closeMo('mo-add-folio');renderFolios();
+}
+
+function openCloseFolio(id){
+  folioActivo=id;
+  const f=foliosData.find(x=>x.id===id);
+  document.getElementById('cf-title').textContent='Cerrar folio '+f.num+' — '+f.tienda;
+  document.getElementById('cf-sol').value='';
+  document.getElementById('cf-tec').value='';
+  openMo('mo-close-folio');
+}
+function doCloseFolio(){
+  const f=foliosData.find(x=>x.id===folioActivo);
+  if(!f)return;
+  f.estado='cerrado';f.sol=document.getElementById('cf-sol').value;
+  f.tec=document.getElementById('cf-tec').value;f.fechaCierre=new Date().toISOString();
+  saveFolios();closeMo('mo-close-folio');renderFolios();
+}
+function delFolio(id){if(!confirm('¿Eliminar este folio?'))return;foliosData=foliosData.filter(x=>x.id!==id);saveFolios();renderFolios();}
+function reopenFolio(id){const f=foliosData.find(x=>x.id===id);if(f){f.estado='abierto';f.fechaCierre='';saveFolios();renderFolios();}}
+
+function msToHMS(ms){
+  if(ms<=0)return'VENCIDO';
+  const h=Math.floor(ms/3600000);const m=Math.floor((ms%3600000)/60000);const s=Math.floor((ms%60000)/1000);
+  return(h?h+'h ':'')+m+'m '+s+'s';
+}
+function getTimerClass(ms,totalMs){
+  if(ms<=0)return'tover';
+  const pct=ms/totalMs;
+  if(pct>0.25)return'tok';
+  if(ms>7200000)return'twarn'; // >2h
+  return'tcrit';
+}
+
+function buildFolioCard(f){
+  const apertura=new Date(f.fecha);
+  const totalMs=FOLIO_HORAS[f.pri]*3600000;
+  const limite=new Date(apertura.getTime()+totalMs);
+  const now=new Date();
+  const restMs=limite-now;
+  const priColors={ALTA:'fc-alta',MEDIA:'fc-media',BAJA:'fc-baja'};
+  const priLabel={ALTA:'🔴 ALTA',MEDIA:'🟡 MEDIA',BAJA:'🟢 BAJA'};
+  const fmtDT=dt=>{try{return new Date(dt).toLocaleString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return'—';}};
+
+  if(f.estado==='cerrado'){
+    const tookMs=new Date(f.fechaCierre)-apertura;
+    const tookH=Math.floor(tookMs/3600000);const tookM=Math.floor((tookMs%3600000)/60000);
+    const onTime=tookMs<=totalMs;
+    return`<div class="folio-card ${priColors[f.pri]} fc-closed">
+      <div class="fc-top">
+        <span class="fc-num">#${f.num}</span>
+        <span class="fc-store">${f.tienda}</span>
+        <span class="badge ${priColors[f.pri]==='fc-alta'?'br':priColors[f.pri]==='fc-media'?'ba':'bg'}">${priLabel[f.pri]}</span>
+        <span class="badge bg">✓ Cerrado</span>
+        <span class="badge ${onTime?'bg':'br'}">${onTime?'En tiempo':'Fuera de tiempo'}</span>
+        <span class="fc-who">${f.rep||''}</span>
+      </div>
+      <div class="fc-desc">${f.desc}</div>
+      ${f.sol?`<div style="font-size:12px;color:var(--gn);margin-bottom:8px">✓ ${f.sol}${f.tec?' · '+f.tec:''}</div>`:''}
+      <div class="fc-bot">
+        <span class="fc-when">Apertura: ${fmtDT(f.fecha)}</span>
+        <span class="fc-when">Cierre: ${fmtDT(f.fechaCierre)}</span>
+        <span class="fc-when">Atendido en: ${tookH}h ${tookM}m</span>
+        <span style="margin-left:auto;display:flex;gap:6px">
+          <button class="btn bsm" onclick="reopenFolio(${f.id})">Reabrir</button>
+          <button class="btn bsm" style="color:var(--rd)" onclick="delFolio(${f.id})">✕</button>
+        </span>
+      </div>
+    </div>`;
+  }
+
+  const tc=getTimerClass(restMs,totalMs);
+  return`<div class="folio-card ${priColors[f.pri]}" id="fc-${f.id}">
+    <div class="fc-top">
+      <span class="fc-num">#${f.num}</span>
+      <span class="fc-store">${f.tienda}</span>
+      <span class="badge ${priColors[f.pri]==='fc-alta'?'br':priColors[f.pri]==='fc-media'?'ba':'bg'}">${priLabel[f.pri]}</span>
+      <span class="fc-who">${f.rep||''}</span>
+    </div>
+    <div class="fc-desc">${f.desc}</div>
+    <div class="fc-bot">
+      <div class="tbox ${tc}" id="timer-${f.id}">⏱ ${msToHMS(restMs)}</div>
+      <span class="fc-when">Apertura: ${fmtDT(f.fecha)}</span>
+      <span class="fc-when">Límite: ${fmtDT(limite)}</span>
+      <span style="margin-left:auto;display:flex;gap:6px">
+        <button class="btn bsm bp2" onclick="openCloseFolio(${f.id})">✓ Cerrar</button>
+        <button class="btn bsm" style="color:var(--rd)" onclick="delFolio(${f.id})">✕</button>
+      </span>
+    </div>
+  </div>`;
+}
+
+const SHEET_CSV_URL = 'https://script.google.com/macros/s/AKfycbwkEq4XHC_2Y9CPcIwe1RpOCkNFT5HlxgFxK5j21zdfgIb4lKzRmeSU3YhYDVc0ibHvbw/exec';
+let sheetFolios = [];
+let sheetRefreshInterval = null;
+
+function parseCSV(text){
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line=>{
+    const cols = line.match(/(".*?"|[^,]+)(?=,|$)/g)||[];
+    const obj = {};
+    headers.forEach((h,i)=>{ obj[h]=(cols[i]||'').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  }).filter(r=>r.FOLIO);
+}
+
+function parseFechaSheet(str){
+  if(!str) return null;
+  if(str instanceof Date) return str;
+  str = String(str).trim();
+  if(!str) return null;
+  const sp = str.split(' ');
+  const dp = sp[0].split('/');
+  if(dp.length !== 3) return null;
+  const dd=parseInt(dp[0]), mo=parseInt(dp[1])-1, yy=parseInt(dp[2]);
+  const tp = sp[1] ? sp[1].split(':') : [0,0,0];
+  const hh=parseInt(tp[0])||0, mm2=parseInt(tp[1])||0;
+  const result = new Date(yy, mo, dd, hh, mm2, 0);
+  return isNaN(result.getTime()) ? null : result;
+}
+
+async function fetchSheetFolios(){
+  try{
+    const res = await fetch(SHEET_CSV_URL);
+    const rows = await res.json();
+    sheetFolios = rows.map(r=>({
+      id: r.FOLIO,
+      num: r.FOLIO,
+      pri: (r.PRIORIDAD||'').toUpperCase(),
+      tienda: r.TIENDA||'—',
+      desc: r.FALLA||'—',
+      cat: r.CATEGORÍA||r.CATEGORIA||'—',
+      fecha: parseFechaSheet(r['FECHA APERTURA']),
+      estado: (r.ESTADO||'').toUpperCase(),
+      fechaCierre: null
+    }));
+    renderFoliosFromSheet();
+  } catch(e){
+    console.error('Error leyendo Sheet:',e);
+    document.getElementById('folios-pc').innerHTML='<div class="empty-f">Error al leer el Sheet. Verifica que esté compartido como público de solo lectura.</div>';
+  }
+}
+
+function renderFolios(){
+  const el=document.getElementById('folios-pc');if(!el)return;
+  el.innerHTML='<div class="empty-f" style="padding:32px">⏳ Cargando folios...</div>';
+  fetchSheetFolios();
+  if(sheetRefreshInterval) clearInterval(sheetRefreshInterval);
+  sheetRefreshInterval = setInterval(fetchSheetFolios, 60000);
+}
+
+function renderFoliosFromSheet(){
+  const el=document.getElementById('folios-pc');if(!el)return;
+
+  const FOLIO_MS={ALTA:6*3600000, MEDIA:72*3600000, BAJA:720*3600000};
+  const abiertos=sheetFolios.filter(f=>f.estado==='ABIERTO');
+  const cerrados=sheetFolios.filter(f=>f.estado==='CERRADO');
+
+  // ordenar abiertos por tiempo restante ascendente
+  abiertos.sort((a,b)=>{
+    const ra=a.fecha?(a.fecha.getTime()+FOLIO_MS[a.pri])-Date.now():Infinity;
+    const rb=b.fecha?(b.fecha.getTime()+FOLIO_MS[b.pri])-Date.now():Infinity;
+    return ra-rb;
+  });
+
+  const byPri={
+    ALTA:abiertos.filter(f=>f.pri==='ALTA'),
+    MEDIA:abiertos.filter(f=>f.pri==='MEDIA'),
+    BAJA:abiertos.filter(f=>f.pri==='BAJA')
+  };
+
+  const fmtDT=dt=>{if(!dt)return'—';return dt.toLocaleString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});};
+
+  const buildCard=(f)=>{
+    const totalMs=FOLIO_MS[f.pri]||0;
+    const apertura=f.fecha;
+    const limite=apertura?new Date(apertura.getTime()+totalMs):null;
+    const restMs=limite?limite-Date.now():0;
+    const priCls={ALTA:'fc-alta',MEDIA:'fc-media',BAJA:'fc-baja'};
+    const priLbl={ALTA:'🔴 ALTA',MEDIA:'🟡 MEDIA',BAJA:'🟢 BAJA'};
+
+    if(f.estado==='CERRADO'){
+      return`<div class="folio-card ${priCls[f.pri]||''} fc-closed">
+        <div class="fc-top">
+          <span class="fc-num">#${f.num}</span>
+          <span class="fc-store">${f.tienda}</span>
+          <span class="badge ${f.pri==='ALTA'?'br':f.pri==='MEDIA'?'ba':'bg'}">${priLbl[f.pri]||f.pri}</span>
+          <span class="badge bg">✓ Cerrado</span>
+        </div>
+        <div class="fc-desc">${f.desc}${f.cat&&f.cat!=='—'?' · <span style="color:var(--mu)">'+f.cat+'</span>':''}</div>
+        <div class="fc-bot"><span class="fc-when">Apertura: ${fmtDT(apertura)}</span></div>
+      </div>`;
+    }
+
+    // determinar clase del timer
+    let tc='tok';
+    if(restMs<=0) tc='tover';
+    else if(restMs<7200000) tc='twarn'; // <2h
+    else if(restMs/totalMs<0.25) tc='twarn';
+
+    // si vencido color azul como acordamos
+    const timerStyle=restMs<=0?'background:var(--as);border-color:var(--ac);color:var(--ac)':'';
+
+    return`<div class="folio-card ${priCls[f.pri]||''}">
+      <div class="fc-top">
+        <span class="fc-num">#${f.num}</span>
+        <span class="fc-store">${f.tienda}</span>
+        <span class="badge ${f.pri==='ALTA'?'br':f.pri==='MEDIA'?'ba':'bg'}">${priLbl[f.pri]||f.pri}</span>
+      </div>
+      <div class="fc-desc">${f.desc}${f.cat&&f.cat!=='—'?' · <span style="color:var(--mu);font-size:12px">'+f.cat+'</span>':''}</div>
+      <div class="fc-bot">
+        <div class="tbox ${tc}" id="stimer-${f.num}" style="${timerStyle}">⏱ ${msToHMS(restMs)}</div>
+        <span class="fc-when">Apertura: ${fmtDT(apertura)}</span>
+        ${limite?`<span class="fc-when">Límite: ${fmtDT(limite)}</span>`:''}
+      </div>
+    </div>`;
+  };
+
+  let html=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1">
+        <div class="sc red"><div class="sl">Alta activos</div><div class="sv">${byPri.ALTA.length}</div><div class="ss">6 horas</div></div>
+        <div class="sc amb"><div class="sl">Media activos</div><div class="sv">${byPri.MEDIA.length}</div><div class="ss">72 horas</div></div>
+        <div class="sc grn"><div class="sl">Baja activos</div><div class="sv">${byPri.BAJA.length}</div><div class="ss">30 días</div></div>
+      </div>
+      <div style="margin-left:14px"><span class="txt-m">Actualiza cada minuto</span><br><button class="btn bsm" onclick="fetchSheetFolios()" style="margin-top:4px">↺ Actualizar ahora</button></div>
+    </div>`;
+
+  const sections=[
+    {key:'ALTA',label:'🔴 ALTA — Tiempo límite: 6 horas',cls:'fst-a'},
+    {key:'MEDIA',label:'🟡 MEDIA — Tiempo límite: 72 horas',cls:'fst-m'},
+    {key:'BAJA',label:'🟢 BAJA — Tiempo límite: 30 días',cls:'fst-b'}
+  ];
+
+  sections.forEach(sec=>{
+    const items=byPri[sec.key];
+    html+=`<div class="folio-section">
+      <div class="fst ${sec.cls}">${sec.label}<span style="margin-left:auto;font-size:13px">${items.length} activo${items.length!==1?'s':''}</span></div>
+      ${items.length?items.map(buildCard).join(''):`<div class="empty-f">Sin folios ${sec.key} activos ✓</div>`}
+    </div>`;
+  });
+
+  if(cerrados.length){
+    html+=`<div class="folio-section">
+      <div class="fst" style="background:var(--bg);color:var(--mu)">✓ Últimos cerrados — ${cerrados.length}</div>
+      ${cerrados.slice(0,10).map(buildCard).join('')}
+    </div>`;
+  }
+
+  el.innerHTML=html;
+  startSheetTimers();
+  updateFolioBadge();
+}
+
+function startSheetTimers(){
+  if(timerInterval) clearInterval(timerInterval);
+  const FOLIO_MS={ALTA:6*3600000,MEDIA:72*3600000,BAJA:720*3600000};
+  timerInterval=setInterval(()=>{
+    sheetFolios.filter(f=>f.estado==='ABIERTO').forEach(f=>{
+      const el=document.getElementById('stimer-'+f.num);if(!el)return;
+      const totalMs=FOLIO_MS[f.pri]||0;
+      const restMs=f.fecha?(f.fecha.getTime()+totalMs)-Date.now():0;
+      el.textContent='⏱ '+msToHMS(restMs);
+      if(restMs<=0){
+        el.className='tbox';
+        el.style='background:var(--as);border-color:var(--ac);color:var(--ac)';
+      } else if(restMs<7200000){
+        el.className='tbox twarn';el.style='';
+      } else {
+        el.className='tbox tok';el.style='';
+      }
+    });
+  },1000);
+}
+
+function startTimers(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    const abiertos=foliosData.filter(f=>f.estado==='abierto');
+    abiertos.forEach(f=>{
+      const el=document.getElementById('timer-'+f.id);if(!el)return;
+      const totalMs=FOLIO_HORAS[f.pri]*3600000;
+      const restMs=new Date(f.fecha).getTime()+totalMs-Date.now();
+      el.textContent='⏱ '+msToHMS(restMs);
+      el.className='tbox '+getTimerClass(restMs,totalMs);
+    });
+  },1000);
+}
+
+function updateFolioBadge(){
+  const vencidos=foliosData.filter(f=>{
+    if(f.estado!=='abierto')return false;
+    const totalMs=FOLIO_HORAS[f.pri]*3600000;
+    return Date.now()>new Date(f.fecha).getTime()+totalMs;
+  }).length;
+  const altas=foliosData.filter(f=>f.estado==='abierto'&&f.pri==='ALTA').length;
+  const badge=document.getElementById('bdg-folios');
+  const n=vencidos||altas;
+  badge.textContent=n;badge.style.display=n?'inline':'none';
+}
+
+// patch openMo for folio
+const _origOpenMo=openMo;
+openMo=function(id){
+  if(id==='mo-add-folio'){openMoFolio();return;}
+  _origOpenMo(id);
+};
+
+// INIT
+document.getElementById('bdg').textContent=pendientes.filter(p=>p.estado==='abierto').length;
+updateFolioBadge();
+renderDash();
+</script>
+</body></html>
