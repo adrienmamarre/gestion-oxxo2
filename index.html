@@ -771,8 +771,8 @@ function renderPrevTab(cq){
                   ${s}
                 </span>
                 ${isRev?'<span title="Revisión especial" style="font-size:13px">⭐</span>':''}
-                <span onclick="toggleRevision('${cq}',${ri},'${s.replace(/'/g,"\\'")}\")" title="${isRev?'Quitar revisión especial':'Marcar como revisión especial'}" style="cursor:pointer;font-size:12px;opacity:${isRev?1:.3}">★</span>
-                ${pa?`<span class="cs-pb" onclick="openTP('${cq}','${s.replace(/'/g,"\\'")}\")" title="Ver pendientes de ${s}" style="cursor:pointer">${pa}📋</span>`:'<span onclick="openTP(\''+cq+'\',\''+s.replace(/'/g,"\\'")+'\')" title="Pendientes de '+s+'" style="cursor:pointer;opacity:.3;font-size:11px">📋</span>'}
+                <span onclick="toggleRevision('${cq}',${ri},'${s.replace(/'/g,"\\'")}')" title="${isRev?'Quitar revisión especial':'Marcar como revisión especial'}" style="cursor:pointer;font-size:12px;opacity:${isRev?1:.3}">★</span>
+                ${pa?`<span class="cs-pb" onclick="openTP('${cq}','${s.replace(/'/g,"\\'")}')" title="Ver pendientes de ${s}" style="cursor:pointer">${pa}📋</span>`:'<span onclick="openTP(\''+cq+'\',\''+s.replace(/'/g,"\\'")+'\')" title="Pendientes de '+s+'" style="cursor:pointer;opacity:.3;font-size:11px">📋</span>'}
               </div>`;
             }).join(''):`<span class="txt-m" style="font-size:12px">${isSat?'Sábado':'—'}</span>`}
           </div>
