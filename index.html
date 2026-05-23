@@ -1599,15 +1599,18 @@ function parseCSV(text){
 }
 
 function parseFechaSheet(str){
-  if(!str) return null;
-  if(str instanceof Date) return str;
+    if(str instanceof Date) return str;
   str = String(str).trim();
   if(!str) return null;
+  // formato ISO: 2026-04-24T00:06:00.000Z
+if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+2*3600000);}
+  // formato dd/MM/yyyy HH:mm
   const sp = str.split(' ');
   const dp = sp[0].split('/');
   if(dp.length !== 3) return null;
   const dd=parseInt(dp[0]), mo=parseInt(dp[1])-1, yy=parseInt(dp[2]);
-  const tp = sp[1] ? sp[1].split(':') : [0,0,0];
+  if(yy < 2020 || yy > 2100) return null;
+  const tp = sp[1] ? sp[1].split(':') : [0,0];
   const hh=parseInt(tp[0])||0, mm2=parseInt(tp[1])||0;
   const result = new Date(yy, mo, dd, hh, mm2, 0);
   return isNaN(result.getTime()) ? null : result;
