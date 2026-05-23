@@ -1509,8 +1509,13 @@ function reopenFolio(id){const f=foliosData.find(x=>x.id===id);if(f){f.estado='a
 
 function msToHMS(ms){
   if(ms<=0)return'VENCIDO';
-  const h=Math.floor(ms/3600000);const m=Math.floor((ms%3600000)/60000);const s=Math.floor((ms%60000)/1000);
-  return(h?h+'h ':'')+m+'m '+s+'s';
+  const totalMin=Math.floor(ms/60000);
+  const dias=Math.floor(totalMin/1440);
+  const horas=Math.floor((totalMin%1440)/60);
+  const mins=totalMin%60;
+  if(dias>0)return dias+'d '+horas+'h '+mins+'m';
+  if(horas>0)return horas+'h '+mins+'m';
+  return mins+'m';
 }
 function getTimerClass(ms,totalMs){
   if(ms<=0)return'tover';
