@@ -1599,8 +1599,7 @@ function parseCSV(text){
 }
 
 function parseFechaSheet(str){
-if(!str) return null;
-  if(str instanceof Date) return str;
+    if(str instanceof Date) return str;
   str = String(str).trim();
   if(!str) return null;
   // formato ISO: 2026-04-24T00:06:00.000Z
