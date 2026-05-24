@@ -1599,11 +1599,12 @@ function parseCSV(text){
 }
 
 function parseFechaSheet(str){
-    if(str instanceof Date) return str;
+if(!str) return null;
+  if(str instanceof Date) return str;
   str = String(str).trim();
   if(!str) return null;
   // formato ISO: 2026-04-24T00:06:00.000Z
-  if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+2*3600000);}
+if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+2*3600000);}
   // formato dd/MM/yyyy HH:mm
   const sp = str.split(' ');
   const dp = sp[0].split('/');
