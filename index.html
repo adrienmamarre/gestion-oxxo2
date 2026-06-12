@@ -1507,7 +1507,7 @@ function doCloseFolio(){
 function delFolio(id){if(!confirm('¿Eliminar este folio?'))return;foliosData=foliosData.filter(x=>x.id!==id);saveFolios();renderFolios();}
 function reopenFolio(id){const f=foliosData.find(x=>x.id===id);if(f){f.estado='abierto';f.fechaCierre='';saveFolios();renderFolios();}}
 
-function msToHMS(ms){
+if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+2*3600000);}
   if(ms<=0)return'VENCIDO';
   const totalMin=Math.floor(ms/60000);
   const dias=Math.floor(totalMin/1440);
