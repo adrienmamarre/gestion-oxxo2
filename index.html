@@ -1512,7 +1512,7 @@ function parseFechaSheet(str){
   if(str instanceof Date) return str;
   str = String(str).trim();
   if(!str) return null;
-  if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+2*3600000);}
+  if(str.includes('T')){const d=new Date(str);return new Date(d.getTime()+1*3600000);}
   const sp = str.split(' ');
   const dp = sp[0].split('/');
   if(dp.length !== 3) return null;
